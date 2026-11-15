@@ -1,0 +1,51 @@
+{
+  "diagnostic_only": true,
+  "limitation": "Invented force constants and unlimited-slip bicycle model; not race physics, qualifying, finish validation or performance evidence.",
+  "assumptions": {
+    "mass_kg": 1000.0,
+    "drive_force_n": [
+      7000.0,
+      9000.0,
+      13000.0,
+      18000.0
+    ],
+    "brake_force_n": 40000.0,
+    "drag_coefficient": 0.7,
+    "rolling_force_n": 100.0
+  },
+  "results": [
+    {
+      "track": "parkland",
+      "assumed_speed_cap_mps": 58.0,
+      "assumed_driver_lateral_mps2": 11.0,
+      "approx_one_lap_seconds": 147.0,
+      "completed_one_synthetic_lap": true,
+      "max_abs_offset_m": 0.0638,
+      "max_abs_heading_rad": 0.011,
+      "max_unlimited_lateral_demand_mps2": 14.551,
+      "crossed_public_road_edge": false
+    },
+    {
+      "track": "highland",
+      "assumed_speed_cap_mps": 58.0,
+      "assumed_driver_lateral_mps2": 11.0,
+      "approx_one_lap_seconds": 187.5,
+      "completed_one_synthetic_lap": true,
+      "max_abs_offset_m": 0.017,
+      "max_abs_heading_rad": 0.0015,
+      "max_unlimited_lateral_demand_mps2": 14.217,
+      "crossed_public_road_edge": false
+    },
+    {
+      "track": "crossover",
+      "assumed_speed_cap_mps": 58.0,
+      "assumed_driver_lateral_mps2": 11.0,
+      "approx_one_lap_seconds": 163.8,
+      "completed_one_synthetic_lap": true,
+      "max_abs_offset_m": 0.0137,
+      "max_abs_heading_rad": 0.0016,
+      "max_unlimited_lateral_demand_mps2": 14.589,
+      "crossed_public_road_edge": false
+    }
+  ]
+}

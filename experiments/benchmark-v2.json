@@ -1,0 +1,129 @@
+{
+  "python_version": "3.9.6",
+  "source_sha256": {
+    "agent.py": "4e39f638f149f20c836a97a903a518c91df7ee70c475bfa0e09c5a42d980ad94",
+    "track_data.py": "1d9b61ce5bde45553a851895fa7cf61796a77ba169115a00f7c08eb7f6bd9f02",
+    "design.json": "dbf5f2e1af37e570b356dc5f85d2d109b844b2b69d81039395fb3f12ea55ced6"
+  },
+  "calls": 30000,
+  "scenario_segments": [
+    {
+      "track": "parkland",
+      "wetness": 0.0,
+      "calls": 3334,
+      "cpu_ms": 558.213,
+      "requests": {
+        "pit": 1,
+        "aero_x": 706,
+        "aid": 311,
+        "brake": 2295
+      }
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.3,
+      "calls": 3334,
+      "cpu_ms": 552.689,
+      "requests": {
+        "pit": 1,
+        "aero_x": 679,
+        "aid": 267,
+        "brake": 2357
+      }
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.8,
+      "calls": 3334,
+      "cpu_ms": 548.284,
+      "requests": {
+        "pit": 0,
+        "aero_x": 533,
+        "aid": 0,
+        "brake": 2596
+      }
+    },
+    {
+      "track": "highland",
+      "wetness": 0.0,
+      "calls": 3333,
+      "cpu_ms": 544.638,
+      "requests": {
+        "pit": 19,
+        "aero_x": 156,
+        "aid": 200,
+        "brake": 2550
+      }
+    },
+    {
+      "track": "highland",
+      "wetness": 0.3,
+      "calls": 3333,
+      "cpu_ms": 554.917,
+      "requests": {
+        "pit": 19,
+        "aero_x": 149,
+        "aid": 160,
+        "brake": 2674
+      }
+    },
+    {
+      "track": "highland",
+      "wetness": 0.8,
+      "calls": 3333,
+      "cpu_ms": 548.937,
+      "requests": {
+        "pit": 0,
+        "aero_x": 119,
+        "aid": 0,
+        "brake": 2877
+      }
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.0,
+      "calls": 3333,
+      "cpu_ms": 542.282,
+      "requests": {
+        "pit": 50,
+        "aero_x": 376,
+        "aid": 114,
+        "brake": 2558
+      }
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.3,
+      "calls": 3333,
+      "cpu_ms": 543.622,
+      "requests": {
+        "pit": 50,
+        "aero_x": 369,
+        "aid": 109,
+        "brake": 2628
+      }
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.8,
+      "calls": 3333,
+      "cpu_ms": 544.935,
+      "requests": {
+        "pit": 0,
+        "aero_x": 256,
+        "aid": 0,
+        "brake": 2832
+      }
+    }
+  ],
+  "init_cpu_ms": 0.051,
+  "act_cpu_seconds": 4.938517,
+  "act_p50_ms": 0.169,
+  "act_p99_ms": 0.184,
+  "act_max_ms": 0.409,
+  "act_calls_above_200ms": 0,
+  "invalid_or_exception_count": 0,
+  "first_errors": [],
+  "harness_elapsed_seconds": 8.461181208,
+  "limitation": "Synthetic scripted field combinations, not a physical race. Act CPU excludes observation generation, validation, JSON and platform overhead. No lap-time, ranking, collision or total-match CPU compliance claim."
+}

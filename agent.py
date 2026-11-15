@@ -1,4 +1,4 @@
-"""AGX Formula Racing v1: bounded predictive planning and persistent race state.
+"""AGX Formula Racing v2: separate route planning from brief traction events.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -81,7 +81,11 @@ class Driver:
         self.pass_lane = 0.0
         self.pass_seat = None
         self.grip_scale = 1.0
+        self.slip_exposure = 0.0
         self.last_target = None
+        self.braking = False
+        self.boosting = False
+        self.power_clear_time = 0.20
         self.in_straight = False
         self.energy_reserve = 1.1
         self.fuel_sample = None
@@ -124,7 +128,14 @@ class Driver:
         wear = clip(maximum(car.get("tyre_wear")), 0, 1)
         hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
         sliding = bool(car.get("front_sliding") or car.get("rear_sliding"))
-        self.grip_scale = clip(self.grip_scale + (-0.23 if sliding else 0.018) * dt,
+        # A one-callback lockup must not permanently reduce the route plan.
+        # Accumulate sustained/high-duty slip, while isolated pulses decay in
+        # two clear callbacks. Alternating slip/clear still accumulates risk.
+        self.slip_exposure = clip(self.slip_exposure
+                                  + (1.0 if sliding else -0.5) * dt, 0.0, 0.6)
+        persistent_slip = self.slip_exposure >= 0.20
+        grip_loss = persistent_slip and sliding
+        self.grip_scale = clip(self.grip_scale + (-0.23 if grip_loss else 0.018) * dt,
                                0.68, 1.0)
         grip = (1 - 0.55 * wet) * max(0.66, 1 - 0.35 * wear)
         grip *= max(0.76, 1 - hot * 0.008) * self.grip_scale
@@ -163,24 +174,30 @@ class Driver:
                 target = min(target, math.sqrt(envelope * envelope
                                               + 2 * decel * approach_distance))
                 next_distance = distance
+        if number(car.get("pu_temp_c"), 90) > 125:
+            target = min(target, 32.0)
+        # Persist only the route/weather/vehicle plan. A temporary traction or
+        # position intervention below must never become the next plan's ceiling:
+        # v1 fed 0.88 * actual speed back here and ratcheted wet pace downward.
+        # Route slowdowns remain immediate; planned acceleration stays bounded.
+        if self.last_target is not None:
+            target = min(target, self.last_target + 4.0 * dt)
+        self.last_target = max(3.0, target)
+        target = self.last_target
         margin = min(width_left - number(car.get("n")),
                      width_right + number(car.get("n")))
         heading = abs(number(car.get("heading_error")))
+        sideslip = abs(math.atan2(number(car.get("vy")),
+                                 max(6.0, number(car.get("vx"), speed))))
         if margin < 1.5:
             target = min(target, 11.0 + 5.0 * max(0.0, margin))
         elif heading > 0.30:
             target = min(target, 18.0)
-        if heading > 0.65:
+        if heading > 0.65 or sideslip > 0.25:
             target = min(target, 8.0)
-        if sliding:
+        if persistent_slip:
             target = min(target, max(7.0, speed * 0.88))
-        if number(car.get("pu_temp_c"), 90) > 125:
-            target = min(target, 32.0)
-        # Limit renewed acceleration, while never delaying a required slowdown.
-        if self.last_target is not None:
-            target = min(target, self.last_target + 4.0 * dt)
-        self.last_target = max(3.0, target)
-        return self.last_target
+        return max(3.0, target)
 
     def traffic_plan(self, observation, rows, target, dt):
         car = observation["self"]
@@ -327,6 +344,8 @@ class Driver:
         pit, compound = self.pit_plan(observation)
         if car.get("pit_state"):
             self.last_steer = 0.0
+            self.braking, self.boosting = False, False
+            self.power_clear_time = 0.0
             return neutral()
         target = self.speed_plan(observation, rows, geometry, dt)
         target, lane, emergency, straight = self.traffic_plan(observation, rows, target, dt)
@@ -354,13 +373,30 @@ class Driver:
         wet = number((observation.get("weather") or {}).get("track_wetness"))
         slipping = bool(car.get("front_sliding") or car.get("rear_sliding"))
         soc = number(car.get("ers_soc_mj"))
+        # Amplitude hysteresis, never a minimum holding time: a newly required
+        # slowdown or emergency enters braking immediately on this callback.
+        if emergency or error < -0.5:
+            self.braking = True
+        elif error >= -0.15:
+            self.braking = False
         if straight and not self.in_straight:
             self.energy_reserve = max(0.8, soc * 0.38)
         self.in_straight = straight
-        power_safe = not slipping and abs(heading) < 0.2 and not emergency
-        boost = straight and error > 1.2 and soc > self.energy_reserve and power_safe
+        power_safe = (not slipping and abs(heading) < 0.2
+                      and abs(sideslip) < 0.25 and not emergency)
+        # Unsafe traction closes boost immediately. Only its re-enabling waits
+        # for a short clear interval; braking and neutral drive never wait.
+        self.power_clear_time = (min(0.20, self.power_clear_time + dt)
+                                 if power_safe else 0.0)
+        boost_error = 0.5 if self.boosting else 1.5
+        boost_reserve = self.energy_reserve + (0.0 if self.boosting else 0.12)
+        self.boosting = bool(straight and error > boost_error
+                             and soc > boost_reserve and power_safe
+                             and self.power_clear_time >= 0.20
+                             and not self.braking)
+        boost = self.boosting
         mode = 2 if boost else 1
-        if error < -0.5 or soc < 0.6:
+        if self.braking or soc < 0.6:
             mode = 0
         mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
         drag = max(0.0, number(car.get("drag_n"))) + max(0.0, number(car.get("rolling_resistance_n")))
@@ -369,7 +405,7 @@ class Driver:
         drives = car.get("drive_force_n") or []
         drive = number(drives[mode]) if len(drives) > mode else 0.0
         brake_capacity = max(1.0, number(car.get("brake_force_max_n"), mass * 12))
-        if error < -0.5:
+        if self.braking:
             throttle = 0.0
             brake = clip(max(-force, mass * min(10.0, -error * 1.7)) / brake_capacity, 0, 1)
         else:
@@ -377,7 +413,7 @@ class Driver:
             throttle = clip(force / drive, 0, 1) if drive > 100 else clip(0.15 + error * 0.25, 0, 1)
         if emergency:
             throttle, brake, mode = 0.0, max(brake, 0.75), 0
-        if abs(heading) > 0.65 or slipping:
+        if abs(heading) > 0.65 or abs(sideslip) > 0.25 or slipping:
             throttle = min(throttle, 0.28)
         if saving or number(car.get("pu_temp_c"), 90) > 125:
             throttle = min(throttle, 0.65)
