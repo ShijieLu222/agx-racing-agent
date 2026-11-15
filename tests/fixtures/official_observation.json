@@ -1,0 +1,324 @@
+{
+  "game_id": "racing",
+  "seat": 0,
+  "decision": 0,
+  "tick": 0,
+  "time": 0.0,
+  "hold_ticks": 1,
+  "laps_total": 1,
+  "position": 1,
+  "self": {
+    "aid_mode": "electrical_override_v1",
+    "aid_extra_recharge_mj": 0.0,
+    "ers_deployed_mj": 0.0,
+    "ers_harvested_mj": 0.0,
+    "aid_extra_deployed_mj": 0.0,
+    "ers_power_kw": 0.0,
+    "aid_available": false,
+    "aid_zone": null,
+    "aid_active": false,
+    "lap": 0,
+    "s": 5375.843,
+    "distance": -420.0,
+    "n": 0.0,
+    "heading_error": 0.0,
+    "speed_mps": 22.0,
+    "vx": 22.0,
+    "vy": 0.0,
+    "yaw_rate": 0.0,
+    "steer": 0.0,
+    "gear": 1,
+    "rpm": 0.0,
+    "throttle": 0.0,
+    "brake": 0.0,
+    "ers_soc_mj": 3.0,
+    "ers_mode": 1,
+    "aero_mode": 0,
+    "override_available": false,
+    "override_active": false,
+    "tyre_temp_c": [
+      84.0,
+      84.0,
+      84.0,
+      84.0
+    ],
+    "tyre_wear": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fuel_kg": 70.0,
+    "brake_temp_c": [
+      500.0,
+      500.0,
+      500.0,
+      500.0
+    ],
+    "pu_temp_c": 88.0,
+    "ride_height_mm": [
+      40.0,
+      75.0
+    ],
+    "g_lat": 0.0,
+    "g_long": 0.0,
+    "compound": "medium",
+    "pit_state": 0,
+    "pit_stops": 0,
+    "status": "racing",
+    "x": -317.36677491366174,
+    "y": -1230.152180349533,
+    "z": 180.9267839317506,
+    "yaw": -2.7551576672641422,
+    "drag_n": 0.0,
+    "downforce_n": 0.0,
+    "effective_mass_kg": 1186.26458363437,
+    "rolling_resistance_n": 100.9692684,
+    "drive_force_n": [
+      0.0,
+      0.0,
+      12465.42115046513,
+      24930.84230093026
+    ],
+    "brake_force_max_n": 56000.0,
+    "front_sliding": false,
+    "rear_sliding": false
+  },
+  "preview": {
+    "columns": [
+      "distance_m",
+      "curvature_1pm",
+      "grade",
+      "half_width_left_m",
+      "half_width_right_m",
+      "aero_zone"
+    ],
+    "rows": [
+      [
+        15.0,
+        -0.012199,
+        0.02373,
+        6.0,
+        6.0,
+        0
+      ],
+      [
+        30.0,
+        -0.012188,
+        0.01589,
+        6.03,
+        6.03,
+        0
+      ],
+      [
+        45.0,
+        -0.010576,
+        0.00774,
+        6.12,
+        6.12,
+        0
+      ],
+      [
+        60.0,
+        -0.008363,
+        0.00157,
+        6.24,
+        6.24,
+        0
+      ],
+      [
+        75.0,
+        -0.007016,
+        -0.00238,
+        6.37,
+        6.37,
+        0
+      ],
+      [
+        90.0,
+        -0.006651,
+        -0.00533,
+        6.52,
+        6.52,
+        0
+      ],
+      [
+        105.0,
+        -0.006562,
+        -0.00877,
+        6.68,
+        6.68,
+        0
+      ],
+      [
+        120.0,
+        -0.006386,
+        -0.01352,
+        6.85,
+        6.85,
+        0
+      ],
+      [
+        135.0,
+        -0.006068,
+        -0.01971,
+        7.04,
+        7.04,
+        0
+      ],
+      [
+        150.0,
+        -0.005649,
+        -0.02637,
+        7.24,
+        7.24,
+        0
+      ],
+      [
+        165.0,
+        -0.00524,
+        -0.03115,
+        7.44,
+        7.44,
+        0
+      ],
+      [
+        180.0,
+        -0.00496,
+        -0.03108,
+        7.63,
+        7.63,
+        0
+      ],
+      [
+        195.0,
+        -0.004878,
+        -0.02496,
+        7.78,
+        7.78,
+        0
+      ],
+      [
+        210.0,
+        -0.004482,
+        -0.01525,
+        7.9,
+        7.9,
+        0
+      ],
+      [
+        225.0,
+        -0.003985,
+        -0.00589,
+        7.99,
+        7.99,
+        0
+      ],
+      [
+        240.0,
+        -0.003621,
+        0.00061,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        255.0,
+        -0.003497,
+        0.00389,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        270.0,
+        -0.003263,
+        0.0048,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        285.0,
+        -0.003048,
+        0.00474,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        300.0,
+        -0.002559,
+        0.00478,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        315.0,
+        -0.001883,
+        0.00527,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        330.0,
+        -0.000779,
+        0.0059,
+        8.0,
+        8.0,
+        0
+      ],
+      [
+        345.0,
+        0.000108,
+        0.00634,
+        7.99,
+        7.99,
+        1
+      ],
+      [
+        360.0,
+        0.000424,
+        0.00648,
+        7.99,
+        7.99,
+        1
+      ]
+    ]
+  },
+  "rivals": [],
+  "track_length_m": 5795.843,
+  "tyres": {
+    "allocation": {
+      "hard": "C3",
+      "medium": "C4",
+      "soft": "C5"
+    }
+  },
+  "limits": {
+    "recharge_mj": 8.5,
+    "soc_window_mj": 4.0
+  },
+  "rules_version": "rsi-racing-4.4",
+  "kernel_version": "rsi-formula-4.0",
+  "phase": "qualifying",
+  "phase_tick": 0,
+  "weather": {
+    "condition": "dry",
+    "rain_probability": 0.15,
+    "rain_intensity": 0.0,
+    "track_wetness": 0.0,
+    "air_temp_c": 24.0,
+    "track_temp_c": 30.0
+  },
+  "forecast": {
+    "condition": "dry",
+    "rain_probability": 0.15,
+    "rain_intensity": 0.0,
+    "track_wetness": 0.0,
+    "air_temp_c": 24.0,
+    "track_temp_c": 30.0
+  }
+}
