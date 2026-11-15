@@ -1,4 +1,4 @@
-"""Regression cases from the first wet race; synthetic observations are not physics."""
+"""Wet-control regressions updated for v5; synthetic inputs are not physics."""
 import copy
 import unittest
 from unittest.mock import patch
@@ -17,7 +17,8 @@ class WetControlRegressionTests(unittest.TestCase):
         row = advance(row)
         row['self']['rear_sliding'] = True
         pulse = agent.act(row)
-        self.assertLessEqual(pulse['throttle'], .28)
+        self.assertEqual(pulse['brake'], 0.0)
+        self.assertGreater(pulse['throttle'], .28)
         row = advance(row)
         row['self']['rear_sliding'] = False
         recovered = agent.act(row)
@@ -37,10 +38,11 @@ class WetControlRegressionTests(unittest.TestCase):
         self.assertTrue(all(a['brake'] == 0 for a in clean_actions))
         self.assertTrue(all(a['throttle'] > 0 for a in clean_actions))
 
-    def test_sustained_slip_retains_active_deceleration_and_power_protection(self):
+    def test_sustained_measured_sideslip_retains_active_deceleration(self):
         row = observation(speed=25.0, curve=.003, wet=1.0)
         agent.act(row)
         row['self']['rear_sliding'] = True
+        row['self']['vy'] = 8.0
         actions = []
         for _ in range(18):
             row = advance(row)
@@ -49,7 +51,7 @@ class WetControlRegressionTests(unittest.TestCase):
         self.assertTrue(any(a['brake'] > 0 for a in actions[-6:]))
         self.assertTrue(all(not a['aid'] for a in actions))
 
-    def test_accumulated_slip_exposure_is_not_reset_by_single_clean_frame(self):
+    def test_slip_flags_without_measured_instability_do_not_force_braking(self):
         row = observation(speed=25.0, curve=.003, wet=1.0)
         agent.act(row)
         actions = []
@@ -58,7 +60,7 @@ class WetControlRegressionTests(unittest.TestCase):
             # A persistently unstable tyre with brief interruptions remains risky.
             row['self']['rear_sliding'] = i % 8 != 7
             actions.append(agent.act(row))
-        self.assertTrue(any(a['brake'] > 0 for a in actions[-8:]))
+        self.assertTrue(all(a['brake'] == 0 for a in actions))
 
     def test_large_heading_error_brakes_immediately_after_transient_slip(self):
         row = observation(speed=25.0, wet=1.0)
@@ -127,7 +129,7 @@ class WetControlRegressionTests(unittest.TestCase):
         self.assertEqual(action['brake'], 0.0)
         self.assertGreater(action['throttle'], 0.0)
 
-    def test_alternating_slip_and_clean_frames_still_accumulate_protection(self):
+    def test_alternating_slip_flags_do_not_accumulate_a_pace_penalty(self):
         row = observation(speed=25.0, curve=.003, wet=1.0)
         agent.act(row)
         tail = []
@@ -137,7 +139,7 @@ class WetControlRegressionTests(unittest.TestCase):
             action = agent.act(row)
             if i >= 50:
                 tail.append(action)
-        self.assertTrue(any(a['brake'] > 0 for a in tail))
+        self.assertTrue(all(a['brake'] == 0 for a in tail))
 
     def test_severe_sideways_velocity_brakes_on_first_observation(self):
         row = observation(speed=25.0, wet=1.0)
@@ -155,7 +157,7 @@ class WetControlRegressionTests(unittest.TestCase):
                 row['self'].update(speed_mps=40.0-error, vx=40.0-error)
                 modes.append(agent.act(row)['ers_mode'])
                 row = advance(row)
-        self.assertEqual(modes, [1, 2, 2, 2, 2, 1])
+        self.assertEqual(modes, [1, 3, 3, 3, 3, 1])
 
     def test_braking_hysteresis_preserves_small_overspeed_then_releases(self):
         row = observation(speed=39.0)
@@ -165,38 +167,37 @@ class WetControlRegressionTests(unittest.TestCase):
                 row['self'].update(speed_mps=40.0-error, vx=40.0-error)
                 actions.append(agent.act(row))
                 row = advance(row)
-        self.assertEqual(actions[0]['ers_mode'], 2)
+        self.assertEqual(actions[0]['ers_mode'], 3)
         for action in actions[1:3]:
             self.assertEqual(action['throttle'], 0.0)
             self.assertGreater(action['brake'], 0.0)
             self.assertEqual(action['ers_mode'], 0)
         self.assertEqual(actions[-1]['brake'], 0.0)
 
-    def test_boost_stops_on_slip_and_only_restarts_after_continuous_clear_time(self):
+    def test_boost_restarts_immediately_when_measured_instability_clears(self):
         row = observation(speed=25.0)
-        self.assertEqual(agent.act(row)['ers_mode'], 2)
+        self.assertEqual(agent.act(row)['ers_mode'], 3)
         row = advance(row)
-        row['self']['rear_sliding'] = True
-        self.assertNotEqual(agent.act(row)['ers_mode'], 2)
+        row['self'].update(rear_sliding=True, heading_error=.8)
+        self.assertNotEqual(agent.act(row)['ers_mode'], 3)
         modes = []
         for _ in range(10):
             row = advance(row)
-            row['self']['rear_sliding'] = False
+            row['self'].update(rear_sliding=False, heading_error=0.0)
             modes.append(agent.act(row)['ers_mode'])
-        self.assertTrue(all(mode != 2 for mode in modes[:4]))
-        self.assertEqual(modes[-1], 2)
+        self.assertTrue(all(mode == 3 for mode in modes))
 
-    def test_repeated_slip_pulses_do_not_restart_boost_between_pulses(self):
+    def test_repeated_slip_flags_do_not_disable_ers_when_car_tracks_cleanly(self):
         row = observation(speed=25.0)
-        self.assertEqual(agent.act(row)['ers_mode'], 2)
+        self.assertEqual(agent.act(row)['ers_mode'], 3)
         for i in range(30):
             row = advance(row)
             row['self']['rear_sliding'] = i % 3 == 0
-            self.assertNotEqual(agent.act(row)['ers_mode'], 2)
+            self.assertEqual(agent.act(row)['ers_mode'], 3)
 
     def test_boost_recovery_wait_does_not_delay_emergency_braking(self):
         row = observation(speed=35.0)
-        self.assertEqual(agent.act(row)['ers_mode'], 2)
+        self.assertEqual(agent.act(row)['ers_mode'], 3)
         row = advance(row)
         row['self']['rear_sliding'] = True
         agent.act(row)

@@ -1,0 +1,998 @@
+{
+  "format": "agx-public-replay-audit.v1",
+  "match_id": "62748d6a-01f8-4841-9b89-840e506b50bf",
+  "result_reason": "all_terminal",
+  "rules_version": "rsi-racing-4.4",
+  "track": "parkland",
+  "race_start_time_s": 1301.25,
+  "race_end_time_s": 1877.35,
+  "verified_public_events": 12316,
+  "verified_frame_chunks": [
+    {
+      "index": 235,
+      "sha256": "52f81e7d14e0c8f91a0d4175414543b8cdbe1a50a7da792f3fd32c003dc941d7"
+    },
+    {
+      "index": 259,
+      "sha256": "a1fb80a1e2630285fde49be755ef75d8a617fb40a95317cc04e2b9b65e5a6ed1"
+    },
+    {
+      "index": 279,
+      "sha256": "3632bb0751aa2e667870391962ba01d224698586c1331e77f7e53728877d98db"
+    },
+    {
+      "index": 299,
+      "sha256": "4af688ddcf6d5421953fe6303e47b1e706e218a53b3c2e8d31848805f991fa85"
+    },
+    {
+      "index": 319,
+      "sha256": "6050b41019a0acd42f167afae5ed15243a4767d8827b47748c5e99201135dec9"
+    },
+    {
+      "index": 342,
+      "sha256": "ab2e12cb3eb52a7c5a9eb184ac3e0375f6d3501c9f9edba061a812cce5d3b9ad"
+    }
+  ],
+  "sampled_race_frames": 701,
+  "cars": [
+    {
+      "car_number": 1,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 468.982,
+      "fastest_lap": {
+        "time_s": 109.707,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 12.0,
+      "ending_fuel_kg": 7.1488,
+      "race_fuel_used_kg": 4.8512,
+      "race_energy_mode_event_counts": {
+        "2": 165,
+        "1": 306,
+        "0": 148,
+        "3": 30
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.36402586206896553,
+      "sampled_speed_max_mps": 88.4632
+    },
+    {
+      "car_number": 2,
+      "position": 5,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 576.093,
+      "fastest_lap": {
+        "time_s": 113.876,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 8.0,
+      "ending_fuel_kg": 4.2413,
+      "race_fuel_used_kg": 3.7587,
+      "race_energy_mode_event_counts": {
+        "2": 901,
+        "3": 350,
+        "1": 1269,
+        "0": 1087
+      },
+      "sampled_active_race_frames": 700,
+      "sampled_mean_throttle": 0.482658,
+      "sampled_speed_max_mps": 87.7251
+    },
+    {
+      "car_number": 3,
+      "position": 2,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 567.013,
+      "fastest_lap": {
+        "time_s": 115.068,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 11.0,
+      "ending_fuel_kg": 6.9667,
+      "race_fuel_used_kg": 4.0333,
+      "race_energy_mode_event_counts": {
+        "1": 713,
+        "0": 574,
+        "3": 141,
+        "2": 77
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.3562155172413793,
+      "sampled_speed_max_mps": 86.3403
+    },
+    {
+      "car_number": 4,
+      "position": 6,
+      "status": "finished",
+      "laps": 3,
+      "total_time_s": 562.105,
+      "fastest_lap": {
+        "time_s": 183.52,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 22.0,
+      "ending_fuel_kg": 20.4034,
+      "race_fuel_used_kg": 1.5966,
+      "race_energy_mode_event_counts": {
+        "1": 267,
+        "0": 175,
+        "2": 92
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.23104810344827587,
+      "sampled_speed_max_mps": 65.1244
+    },
+    {
+      "car_number": 5,
+      "position": 7,
+      "status": "finished",
+      "laps": 3,
+      "total_time_s": 562.759,
+      "fastest_lap": {
+        "time_s": 183.107,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 15.0,
+      "ending_fuel_kg": 11.9954,
+      "race_fuel_used_kg": 3.0046,
+      "race_energy_mode_event_counts": {
+        "1": 128,
+        "0": 117,
+        "2": 11
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.32367586206896554,
+      "sampled_speed_max_mps": 59.4068
+    },
+    {
+      "car_number": 6,
+      "position": 4,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 572.66,
+      "fastest_lap": {
+        "time_s": 116.087,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 12.0,
+      "ending_fuel_kg": 8.1525,
+      "race_fuel_used_kg": 3.8475,
+      "race_energy_mode_event_counts": {
+        "3": 255,
+        "2": 160,
+        "0": 853,
+        "1": 1007
+      },
+      "sampled_active_race_frames": 617,
+      "sampled_mean_throttle": 0.3456933549432739,
+      "sampled_speed_max_mps": 80.8371
+    },
+    {
+      "car_number": 7,
+      "position": 10,
+      "status": "unclassified",
+      "laps": 0,
+      "total_time_s": 63.383,
+      "fastest_lap": null,
+      "pit_stops": 0,
+      "starting_fuel_kg": 60.0,
+      "ending_fuel_kg": 59.5506,
+      "race_fuel_used_kg": 0.4494,
+      "race_energy_mode_event_counts": {
+        "2": 20,
+        "1": 20
+      },
+      "sampled_active_race_frames": 69,
+      "sampled_mean_throttle": 0.6997869565217392,
+      "sampled_speed_max_mps": 17.6774
+    },
+    {
+      "car_number": 8,
+      "position": 8,
+      "status": "finished",
+      "laps": 3,
+      "total_time_s": 564.475,
+      "fastest_lap": {
+        "time_s": 183.937,
+        "lap": 1
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 12.0,
+      "ending_fuel_kg": 9.6613,
+      "race_fuel_used_kg": 2.3387,
+      "race_energy_mode_event_counts": {
+        "1": 1
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.16917413793103447,
+      "sampled_speed_max_mps": 46.7684
+    },
+    {
+      "car_number": 9,
+      "position": 3,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 569.704,
+      "fastest_lap": {
+        "time_s": 112.194,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 12.0,
+      "ending_fuel_kg": 7.842,
+      "race_fuel_used_kg": 4.158,
+      "race_energy_mode_event_counts": {
+        "3": 151,
+        "0": 602,
+        "1": 798,
+        "2": 107
+      },
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.27918689655172413,
+      "sampled_speed_max_mps": 89.9845
+    },
+    {
+      "car_number": 10,
+      "position": 9,
+      "status": "finished",
+      "laps": 3,
+      "total_time_s": 564.971,
+      "fastest_lap": {
+        "time_s": 183.618,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "starting_fuel_kg": 12.0,
+      "ending_fuel_kg": 9.5621,
+      "race_fuel_used_kg": 2.4379,
+      "race_energy_mode_event_counts": {},
+      "sampled_active_race_frames": 580,
+      "sampled_mean_throttle": 0.22798706896551724,
+      "sampled_speed_max_mps": 53.896
+    }
+  ],
+  "qualifying_events": [
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 147,
+      "tick": 6097,
+      "time": 101.6167,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        0
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 93.972607,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 675,
+      "tick": 12612,
+      "time": 210.2,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        1
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 101.098146,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1008,
+      "tick": 19079,
+      "time": 317.9833,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        2
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 100.439948,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1054,
+      "tick": 28039,
+      "time": 467.3167,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        3
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 139.615896,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1137,
+      "tick": 34851,
+      "time": 580.85,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        4
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 104.853993,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1483,
+      "tick": 41952,
+      "time": 699.2,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        5
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 110.622293,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1627,
+      "tick": 51649,
+      "time": 860.8167,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        6
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 151.05382,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1674,
+      "tick": 61020,
+      "time": 1017.0,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        7
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 145.546921,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1720,
+      "tick": 67470,
+      "time": 1124.5,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        8
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 100.132297,
+        "reason": null
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1723,
+      "tick": 78075,
+      "time": 1301.25,
+      "phase": "qualifying",
+      "kind": "qualifying_lap",
+      "seats": [
+        9
+      ],
+      "payload": {
+        "valid": true,
+        "lap_time_s": 165.577825,
+        "reason": null
+      }
+    }
+  ],
+  "weather_events": [
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1021,
+      "tick": 21600,
+      "time": 360.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "dry",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 6.9e-05,
+        "air_temp_c": 24.0,
+        "track_temp_c": 29.9994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1029,
+      "tick": 22320,
+      "time": 372.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.050069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 29.5994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1063,
+      "tick": 28799,
+      "time": 479.9833,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.5,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.0
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1064,
+      "tick": 28800,
+      "time": 480.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.499972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1300,
+      "tick": 36000,
+      "time": 600.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.300069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 27.5994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1440,
+      "tick": 38880,
+      "time": 648.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.500069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 25.9994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1452,
+      "tick": 39600,
+      "time": 660.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.549972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 25.6002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1477,
+      "tick": 41400,
+      "time": 690.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.499972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1552,
+      "tick": 46800,
+      "time": 780.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.350069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 27.1994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1597,
+      "tick": 48960,
+      "time": 816.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.500069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 25.9994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1624,
+      "tick": 50400,
+      "time": 840.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.599972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 25.2002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1630,
+      "tick": 54000,
+      "time": 900.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.499972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1654,
+      "tick": 57600,
+      "time": 960.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "damp",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.400069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.7994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1658,
+      "tick": 59039,
+      "time": 983.9833,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.5,
+        "air_temp_c": 24.0,
+        "track_temp_c": 26.0
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1676,
+      "tick": 61200,
+      "time": 1020.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.649972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 24.8002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1702,
+      "tick": 64800,
+      "time": 1080.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.550069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 25.5994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1721,
+      "tick": 72000,
+      "time": 1200.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.999972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1722,
+      "tick": 75600,
+      "time": 1260.0,
+      "phase": "qualifying",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.900069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.7994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1930,
+      "tick": 79200,
+      "time": 1320.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.999972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 2727,
+      "tick": 82800,
+      "time": 1380.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.900069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.7994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 3462,
+      "tick": 86400,
+      "time": 1440.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.999972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 3898,
+      "tick": 90000,
+      "time": 1500.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.900069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.7994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 4375,
+      "tick": 93600,
+      "time": 1560.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.999972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.0002
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 6341,
+      "tick": 100800,
+      "time": 1680.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.5,
+        "track_wetness": 0.800069,
+        "air_temp_c": 24.0,
+        "track_temp_c": 23.5994
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 10270,
+      "tick": 108000,
+      "time": 1800.0,
+      "phase": "race",
+      "kind": "weather_change",
+      "seats": [],
+      "payload": {
+        "condition": "wet",
+        "rain_probability": 0.35,
+        "rain_intensity": 0.0,
+        "track_wetness": 0.999972,
+        "air_temp_c": 24.0,
+        "track_temp_c": 22.0002
+      }
+    }
+  ],
+  "own_car_incidents": [
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 1735,
+      "tick": 78194,
+      "time": 1303.2333,
+      "phase": "race",
+      "kind": "incident",
+      "seats": [
+        6,
+        3
+      ],
+      "payload": {
+        "reason": "contact",
+        "s": 5748.236694493064
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 2024,
+      "tick": 79539,
+      "time": 1325.65,
+      "phase": "race",
+      "kind": "incident",
+      "seats": [
+        6,
+        3
+      ],
+      "payload": {
+        "reason": "contact",
+        "s": 934.1137194865308
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 2435,
+      "tick": 80851,
+      "time": 1347.5167,
+      "phase": "race",
+      "kind": "incident",
+      "seats": [
+        3,
+        5
+      ],
+      "payload": {
+        "reason": "contact",
+        "s": 1338.3461844854517
+      }
+    },
+    {
+      "game_id": "racing",
+      "rules_version": "rsi-racing-4.4",
+      "kernel_version": "rsi-formula-4.0",
+      "seq": 7052,
+      "tick": 102128,
+      "time": 1702.1333,
+      "phase": "race",
+      "kind": "incident",
+      "seats": [
+        4,
+        3
+      ],
+      "payload": {
+        "reason": "contact",
+        "s": 1116.6099531460295
+      }
+    }
+  ],
+  "limitations": "Verified complete events/static and selected frame chunks only. Sampled throttle/speed statistics are not whole-race statistics. Other participants source code and private decisions are unavailable. Historical public frames are fixed inputs, not a simulation of any new controller or evidence of its future performance."
+}

@@ -5,7 +5,8 @@ NO tyre slip limit, load sensitivity, suspension, collisions, tyre/fuel/ERS
 consumption, weather dynamics, pit transit or engine/gearbox map. Its forces are
 explicit invented test inputs. Never report its lap times as AGX performance.
 
-Usage: python3 scripts/kinematic_check.py --compare 58 62
+Usage: python3 scripts/kinematic_check.py  # No fixed speed cap by default.
+       python3 scripts/kinematic_check.py --compare 58 90  # Diagnostic caps only.
 """
 import argparse
 import json
@@ -100,7 +101,7 @@ def main():
     parser.add_argument("--compare", nargs="+", type=float,
                         default=[agent.DRY_SPEED_CAP])
     args = parser.parse_args()
-    if any(not math.isfinite(v) or v <= 0 for v in args.compare):
+    if any(v is not None and (not math.isfinite(v) or v <= 0) for v in args.compare):
         parser.error("speed caps must be finite positive values")
     output = {
         "diagnostic_only": True,

@@ -157,8 +157,8 @@ class DriverTests(unittest.TestCase):
             preview_only = self.fresh(row)
         self.assertEqual(preview_only, free)
 
-    def test_wetness_and_sliding_make_corner_control_more_conservative(self):
-        for risk in ("wet", "front_sliding", "rear_sliding"):
+    def test_wetness_reduces_estimated_corner_grip(self):
+        for risk in ("wet",):
             changed = False
             for speed in (25.0, 35.0, 45.0, 55.0, 65.0):
                 row = observation(speed=speed, curve=.008)

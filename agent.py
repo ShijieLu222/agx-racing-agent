@@ -1,14 +1,16 @@
-"""AGX Formula Racing v2: separate route planning from brief traction events.
+"""AGX Formula Racing v5: telemetry-based pace, without a fixed speed ceiling.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
 private engine model or a claim of measured race performance. See docs/rules.md.
 """
 import math
+from bisect import bisect_right
 
 try:
-    from track_data import geometry_at, pit_distance, aero_remaining
+    from track_data import TRACKS, geometry_at, pit_distance, aero_remaining
 except ImportError:
+    TRACKS = {}
     def geometry_at(length, station):
         return None
     def pit_distance(length, station):
@@ -20,8 +22,12 @@ except ImportError:
 COLUMNS = ("distance_m", "curvature_1pm", "grade", "half_width_left_m",
            "half_width_right_m", "aero_zone")
 COMPOUNDS = ("soft", "medium", "hard")
-DRY_LATERAL_ACCEL = 11.0
-DRY_SPEED_CAP = 58.0
+# A tyre coefficient is a model estimate, not a speed/acceleration ceiling.
+# Downforce changes the available lateral force with speed. These coefficients
+# still need validation in a new race; public replays do not expose tyre physics.
+BASE_TYRE_MU = 1.75
+DRY_LATERAL_ACCEL = BASE_TYRE_MU * 9.81
+DRY_SPEED_CAP = None  # Optional cap for the diagnostic script; disabled in races.
 
 
 def clip(value, low, high):
@@ -80,17 +86,53 @@ class Driver:
         self.lane = 0.0
         self.pass_lane = 0.0
         self.pass_seat = None
-        self.grip_scale = 1.0
-        self.slip_exposure = 0.0
         self.last_target = None
+        self.last_control_target = None
+        self.free_target = math.inf
         self.braking = False
         self.boosting = False
-        self.power_clear_time = 0.20
         self.in_straight = False
-        self.energy_reserve = 1.1
+        self.downforce_per_v2 = 0.0
+        self.available_braking = DRY_LATERAL_ACCEL
         self.fuel_sample = None
         self.fuel_per_m = None
+        self.fuel_power_scale = 1.0
         self.previous_preview = None
+        self.planning_knots = None
+
+    def public_window(self, length, station, horizon):
+        """All original map knots ahead; a moving probe grid can skip peaks."""
+        if not TRACKS or length <= 0:
+            return None
+        public = min(TRACKS.values(), key=lambda t: abs(t['length'] - length))
+        if abs(public['length'] - length) >= 2:
+            return None
+        cache = self.planning_knots
+        if cache is None or cache[0] is not public['rows'] or cache[1] != length:
+            knots = [r for r in public['rows'] if r[0] < length]
+            if length > public['length']:
+                knots.extend((r[0] + public['length'], *r[1:])
+                             for r in public['rows']
+                             if r[0] + public['length'] < length)
+            knots.append((length - 1e-7, *geometry_at(length, length - 1e-7)))
+            knots.sort(key=lambda r: r[0])
+            cache = (public['rows'], length, tuple(knots), tuple(r[0] for r in knots))
+            self.planning_knots = cache
+        knots, stations = cache[2:]
+        position = station % length
+        index = bisect_right(stations, position)
+        offset = -position
+        if index == len(knots):
+            index, offset = 0, offset + length
+        result = [[0.0, *geometry_at(length, station), 0.0]]
+        while knots[index][0] + offset < horizon:
+            row = knots[index]
+            result.append([row[0] + offset, *row[1:], 0.0])
+            index += 1
+            if index == len(knots):
+                index, offset = 0, offset + length
+        result.append([horizon, *geometry_at(length, station + horizon), 0.0])
+        return result
 
     def current_geometry(self, observation, rows):
         car = observation["self"]
@@ -127,61 +169,80 @@ class Driver:
         wet = clip(number((observation.get("weather") or {}).get("track_wetness")), 0, 1)
         wear = clip(maximum(car.get("tyre_wear")), 0, 1)
         hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
-        sliding = bool(car.get("front_sliding") or car.get("rear_sliding"))
-        # A one-callback lockup must not permanently reduce the route plan.
-        # Accumulate sustained/high-duty slip, while isolated pulses decay in
-        # two clear callbacks. Alternating slip/clear still accumulates risk.
-        self.slip_exposure = clip(self.slip_exposure
-                                  + (1.0 if sliding else -0.5) * dt, 0.0, 0.6)
-        persistent_slip = self.slip_exposure >= 0.20
-        grip_loss = persistent_slip and sliding
-        self.grip_scale = clip(self.grip_scale + (-0.23 if grip_loss else 0.018) * dt,
-                               0.68, 1.0)
-        grip = (1 - 0.55 * wet) * max(0.66, 1 - 0.35 * wear)
-        grip *= max(0.76, 1 - hot * 0.008) * self.grip_scale
-        lateral = DRY_LATERAL_ACCEL * grip
-        braking = 7.2 * grip
+        # No flag-driven grip ratchet, 0.88*speed target, or slow target recovery.
+        # Slip flags alone do not measure loss of control. Heading, sideslip,
+        # road clearance and visible collision threats are handled explicitly.
+        mu = BASE_TYRE_MU * (1 - 0.30 * wet) * max(0.65, 1 - 0.30 * wear)
+        mu *= max(0.75, 1 - hot * 0.008)
         speed = max(0.0, number(car.get("speed_mps")))
-        cap = DRY_SPEED_CAP - 15.0 * wet
-        curve, grade, width_left, width_right = geometry
-        target = min(cap, math.sqrt(lateral / max(abs(curve), 0.00001)))
-        planning = list(rows)
-        # Preview samples are 15 m apart. The public ~6 m geometry can reveal
-        # a narrow bend between them, so also check the near braking horizon.
+        mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
+        downforce = max(0.0, number(car.get("downforce_n")))
+        # F_down ~ coefficient*v^2. Extrapolate only from moving telemetry; the
+        # initial zero-downforce sample must not erase grip for a whole phase.
+        if speed > 8.0 and downforce > 0:
+            self.downforce_per_v2 = downforce / (speed * speed)
+        aero_coefficient = self.downforce_per_v2
+        # Available ground-level braking, bounded only by measured brake force.
+        braking = min(mu * 9.81,
+                      max(1.0, number(car.get("brake_force_max_n"), mass * 12)) / mass)
+        self.available_braking = braking
+        weakest_grade = min([geometry[1]] + [row[2] for row in rows])
+        horizon_braking = max(0.1, braking + 9.81 * weakest_grade)
+        horizon = max(360.0, speed * speed / (2 * horizon_braking) + speed * dt + 3)
         length = number(observation.get("track_length_m"))
+        if length > 0:
+            horizon = min(horizon, length)
+        drag = max(0.0, number(car.get("drag_n")))
+        drag += max(0.0, number(car.get("rolling_resistance_n")))
+        available_drive = maximum(car.get("drive_force_n"))
+        # A finite reachable target for a clear road, NOT a terminal speed cap.
+        # It grows with current speed and lets the engine/drag determine top speed.
+        free_accel = max(1.0, (available_drive - drag) / mass)
+        free_target = math.sqrt(speed * speed + 2 * free_accel * horizon)
+        if DRY_SPEED_CAP is not None:
+            free_target = min(free_target, DRY_SPEED_CAP)
+        self.free_target = free_target
+        def corner_speed(kappa):
+            # Solve v^2*kappa <= mu*(g + F_down(v)/mass).
+            denominator = abs(kappa) - mu * aero_coefficient / mass
+            if denominator <= 0:
+                return free_target
+            return min(free_target, math.sqrt(mu * 9.81 / denominator))
+        curve, grade, width_left, width_right = geometry
+        target = corner_speed(curve)
+        planning = [row for row in rows if row[0] <= horizon]
+        # Preserve the live v4's full ~2 m maps, checking every original knot.
         station = number(car.get("s"))
-        for distance in range(6, 181, 6):
-            sample = geometry_at(length, station + distance)
-            if sample is None:
-                break
-            planning.append([distance, *sample, 0.0])
+        public = self.public_window(length, station, horizon)
+        if public is not None:
+            planning.extend(public)
+        else:
+            for distance in range(2, int(horizon) + 1, 2):
+                sample = geometry_at(length, station + distance)
+                if sample is None:
+                    break
+                planning.append([distance, *sample, 0.0])
         planning.sort(key=lambda r: r[0])
         if not planning:
             target = min(target, 12.0)
         else:
-            # Backward braking envelope across every preview sample. Variable
-            # slope reduces available deceleration downhill. Safety distance
-            # covers a control reaction and the finite 15 m preview sampling.
-            envelope = cap
-            next_distance = planning[-1][0]
+            # Propagate between adjacent knots, using the weaker endpoint grade.
+            # Shift restrictions by one callback plus 3 m of reaction distance.
+            envelope = free_target
+            reaction = 3.0 + dt * speed
+            next_distance = max(0.0, planning[-1][0] - reaction)
+            next_grade = planning[-1][2]
             for row in reversed(planning):
                 distance, kappa, slope = row[:3]
-                corner = min(cap, math.sqrt(lateral / max(abs(kappa), 0.00001)))
-                decel = clip(braking + 9.81 * slope, 2.2, 11.0)
-                envelope = min(corner, math.sqrt(envelope * envelope
-                                  + 2 * decel * max(0.0, next_distance - distance)))
-                approach_distance = max(0.0, distance - 4.0 - 0.22 * speed)
-                target = min(target, math.sqrt(envelope * envelope
-                                              + 2 * decel * approach_distance))
-                next_distance = distance
-        if number(car.get("pu_temp_c"), 90) > 125:
-            target = min(target, 32.0)
-        # Persist only the route/weather/vehicle plan. A temporary traction or
-        # position intervention below must never become the next plan's ceiling:
-        # v1 fed 0.88 * actual speed back here and ratcheted wet pace downward.
-        # Route slowdowns remain immediate; planned acceleration stays bounded.
-        if self.last_target is not None:
-            target = min(target, self.last_target + 4.0 * dt)
+                distance = max(0.0, distance - reaction)
+                corner = corner_speed(kappa)
+                decel = braking + 9.81 * min(slope, next_grade)
+                envelope = min(corner, math.sqrt(max(0.0, envelope * envelope
+                                  + 2 * decel * max(0.0, next_distance - distance))))
+                next_distance, next_grade = distance, slope
+            decel = braking + 9.81 * min(grade, next_grade)
+            target = min(target, math.sqrt(max(0.0, envelope * envelope
+                                              + 2 * decel * next_distance)))
         self.last_target = max(3.0, target)
         target = self.last_target
         margin = min(width_left - number(car.get("n")),
@@ -195,8 +256,6 @@ class Driver:
             target = min(target, 18.0)
         if heading > 0.65 or sideslip > 0.25:
             target = min(target, 8.0)
-        if persistent_slip:
-            target = min(target, max(7.0, speed * 0.88))
         return max(3.0, target)
 
     def traffic_plan(self, observation, rows, target, dt):
@@ -247,7 +306,9 @@ class Driver:
             # constraint smoothly rather than braking right until a hard lane
             # threshold. This allows a committed pass to continue beside a car.
             lateral_overlap = math.sqrt(max(0.0, 1 - (abs(number(rival.get("dn"))) / 2.7) ** 2))
-            desired_gap = (7.0 + 0.45 * speed) * lateral_overlap
+            closing = max(0.0, speed - front_speed)
+            stopping_gap = closing * closing / (2 * max(1.0, getattr(self, "available_braking", 7.0)))
+            desired_gap = (6.0 + speed * dt + stopping_gap) * lateral_overlap
             following = max(0.0, front_speed + (gap - desired_gap) / 1.3)
             target = min(target, following)
             closing = speed - front_speed
@@ -321,8 +382,9 @@ class Driver:
         length = number(observation.get("track_length_m"))
         remaining = max(0.0, (number(observation.get("laps_total"), 4)
                        - number(car.get("lap"))) * length - number(car.get("s")))
-        return fuel < 4 or (self.fuel_per_m is not None and
-                           fuel < remaining * self.fuel_per_m * 1.12 + 1.0)
+        projected = remaining * (self.fuel_per_m or 0.0)
+        self.fuel_power_scale = min(1.0, fuel / projected) if projected > 0 else 1.0
+        return self.fuel_power_scale < 1.0
 
     def act(self, observation):
         car = observation.get("self") or {}
@@ -345,13 +407,10 @@ class Driver:
         if car.get("pit_state"):
             self.last_steer = 0.0
             self.braking, self.boosting = False, False
-            self.power_clear_time = 0.0
             return neutral()
         target = self.speed_plan(observation, rows, geometry, dt)
         target, lane, emergency, straight = self.traffic_plan(observation, rows, target, dt)
         saving = self.fuel_saving(observation)
-        if saving:
-            target = min(target, 38.0)
         speed = max(0.0, number(car.get("speed_mps")))
         kappa, grade, _, _ = geometry
         heading = number(car.get("heading_error"))
@@ -370,58 +429,58 @@ class Driver:
         steer = clip(steer, -1.0, 1.0)
         self.last_steer = steer
         error = target - speed
+        # Follow a falling braking envelope immediately. A proportional-only
+        # controller reacts late when the envelope itself is falling quickly.
+        target_rate = ((target - self.last_control_target) / dt
+                       if self.last_control_target is not None else 0.0)
+        self.last_control_target = target
+        # A changing engine-force estimate is not an approaching road hazard.
+        # Only follow target deceleration when a route/pose/traffic constraint
+        # is binding, rather than the freely reachable reference on a straight.
+        braking_rate = min(0.0, target_rate) if target < self.free_target - 1e-6 else 0.0
+        accel = error * 1.7 + braking_rate
+        mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
+        drag = max(0.0, number(car.get("drag_n"))) + max(0.0, number(car.get("rolling_resistance_n")))
+        force = mass * (accel + 9.81 * grade) + drag
         wet = number((observation.get("weather") or {}).get("track_wetness"))
-        slipping = bool(car.get("front_sliding") or car.get("rear_sliding"))
         soc = number(car.get("ers_soc_mj"))
         # Amplitude hysteresis, never a minimum holding time: a newly required
         # slowdown or emergency enters braking immediately on this callback.
-        if emergency or error < -0.5:
+        if emergency or error < -0.5 or force < -mass * 0.15:
             self.braking = True
-        elif error >= -0.15:
+        elif error >= -0.15 and force >= 0:
             self.braking = False
-        if straight and not self.in_straight:
-            self.energy_reserve = max(0.8, soc * 0.38)
         self.in_straight = straight
-        power_safe = (not slipping and abs(heading) < 0.2
+        power_safe = (abs(heading) < 0.2
                       and abs(sideslip) < 0.25 and not emergency)
-        # Unsafe traction closes boost immediately. Only its re-enabling waits
-        # for a short clear interval; braking and neutral drive never wait.
-        self.power_clear_time = (min(0.20, self.power_clear_time + dt)
-                                 if power_safe else 0.0)
+        # Use attack on corner exits as well as straights. No frozen battery
+        # reserve or arbitrary waiting period restricts requested acceleration.
         boost_error = 0.5 if self.boosting else 1.5
-        boost_reserve = self.energy_reserve + (0.0 if self.boosting else 0.12)
-        self.boosting = bool(straight and error > boost_error
-                             and soc > boost_reserve and power_safe
-                             and self.power_clear_time >= 0.20
+        self.boosting = bool(error > boost_error and soc > 0.0 and power_safe
                              and not self.braking)
         boost = self.boosting
-        mode = 2 if boost else 1
-        if self.braking or soc < 0.6:
+        mode = 3 if boost else 1
+        if self.braking:
             mode = 0
-        mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
-        drag = max(0.0, number(car.get("drag_n"))) + max(0.0, number(car.get("rolling_resistance_n")))
-        accel = clip(error * 1.7, -10.0, 4.8)
-        force = mass * (accel + 9.81 * grade) + drag
         drives = car.get("drive_force_n") or []
         drive = number(drives[mode]) if len(drives) > mode else 0.0
         brake_capacity = max(1.0, number(car.get("brake_force_max_n"), mass * 12))
         if self.braking:
             throttle = 0.0
-            brake = clip(max(-force, mass * min(10.0, -error * 1.7)) / brake_capacity, 0, 1)
+            brake = clip(max(-force, mass * max(0.0, -error * 1.7)) / brake_capacity, 0, 1)
         else:
             brake = 0.0
-            throttle = clip(force / drive, 0, 1) if drive > 100 else clip(0.15 + error * 0.25, 0, 1)
+            throttle = clip(force / drive, 0, 1) if drive > 100 else float(force > 0)
         if emergency:
             throttle, brake, mode = 0.0, max(brake, 0.75), 0
-        if abs(heading) > 0.65 or abs(sideslip) > 0.25 or slipping:
-            throttle = min(throttle, 0.28)
-        if saving or number(car.get("pu_temp_c"), 90) > 125:
-            throttle = min(throttle, 0.65)
+        if saving:
+            throttle *= self.fuel_power_scale
         aid = bool(observation.get("phase") == "race" and power_safe
                    and boost and brake < 0.05 and wet < 0.5
+                   and not (car.get("front_sliding") or car.get("rear_sliding"))
                    and (car.get("aid_available") or car.get("override_available")))
         remaining = aero_remaining(number(observation.get("track_length_m")), number(car.get("s")))
-        aero = int(remaining is not None and remaining > 60 and straight
+        aero = int(remaining is not None and remaining > 45 and straight
                    and brake < 0.05 and power_safe and speed > 20)
         return {"throttle": float(throttle), "brake": float(brake), "steer": float(steer),
                 "ers_mode": mode, "aero_mode": aero, "aid": aid, "override": False,

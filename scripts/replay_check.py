@@ -9,7 +9,7 @@ Example:
     --output experiments/replay-v2.json
 
 The optional baseline loads agent.py from the given full commit SHA and requires
-identical public track_data.py. The public aggregate report omits account names,
+identical public geometry modules. The public aggregate report omits account names,
 job/agent/version IDs, seed, raw observations, and the input file path.
 """
 import argparse
@@ -42,8 +42,9 @@ def baseline_source(commit):
         raise ValueError('--baseline-ref must be a full 40-character commit SHA')
     def read(name):
         return subprocess.check_output(['git', 'show', commit + ':' + name], cwd=ROOT)
-    if read('track_data.py') != (ROOT / 'track_data.py').read_bytes():
-        raise ValueError('baseline track_data.py differs; use an isolated matching checkout')
+    for name in ('track_data.py', 'track_parkland.py', 'track_highland.py', 'track_crossover.py'):
+        if read(name) != (ROOT / name).read_bytes():
+            raise ValueError('baseline geometry differs; use an isolated matching checkout')
     return read('agent.py')
 
 
@@ -128,8 +129,10 @@ def probe_class(module):
             return result
 
         def fuel_saving(self, observation):
+            # The old controller used a fixed speed cap while saving; v3 only
+            # scales fuel demand when its measured consumption exceeds supply.
             saving = super().fuel_saving(observation)
-            if saving:
+            if saving and not hasattr(self, 'fuel_power_scale'):
                 self.probe_target = min(self.probe_target, 38.0)
             return saving
     return Probe
