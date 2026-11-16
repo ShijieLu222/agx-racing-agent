@@ -36,5 +36,8 @@
     "runtime_errors": 0,
     "design_all_tracks_passed": true
   },
-  "platform_status": "not_uploaded"
+  "platform_status": "passed",
+  "platform_version": 9,
+  "version_id": "ebc4d14f-2209-41aa-93f9-1a525d31f61a",
+  "source_commit": "e6c74b0102738fec53b1168f974645b97f9df106"
 }
