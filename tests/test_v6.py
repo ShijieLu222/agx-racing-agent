@@ -23,7 +23,9 @@ class EnergyAllocationTests(unittest.TestCase):
         row = observation(speed=40)
         row['self']['g_lat'] = 2.0
         self.assertEqual(self.mode(row), 2)
-        row['self']['g_lat'] = 2.2
+        # Near the current estimated lateral capacity, regardless of calibration.
+        c = row['self']
+        row['self']['g_lat'] = .99 * agent.tyre_mu(row) * (1 + c['downforce_n'] / (c['effective_mass_kg'] * 9.81))
         self.assertEqual(self.mode(row), 1)
 
     def test_geometry_load_also_prevents_spending_attack(self):

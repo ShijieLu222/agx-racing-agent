@@ -123,7 +123,7 @@ class DriverTests(unittest.TestCase):
 
     def test_far_corner_beyond_first_twelve_rows_changes_speed_control(self):
         changed = False
-        for speed in (40.0, 50.0, 60.0, 70.0, 80.0):
+        for speed in (40.0, 60.0, 80.0, 100.0, 120.0):
             straight = observation(speed=speed)
             corner = copy.deepcopy(straight)
             for row in corner["preview"]["rows"][12:]:
@@ -137,7 +137,7 @@ class DriverTests(unittest.TestCase):
         self.assertTrue(changed, "A corner at 195–360 m was ignored at every tested approach speed")
 
     def test_public_geometry_detects_narrow_bend_between_preview_samples(self):
-        row = observation(speed=45.0)
+        row = observation(speed=50.0)
         # A bend 42 m ahead is between the 30 m and 45 m preview samples.
         # Both policies see exactly the same 24 straight preview rows.
         def narrow_bend(length, station):

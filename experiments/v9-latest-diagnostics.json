@@ -1,0 +1,142 @@
+{
+  "complete_export_verified": true,
+  "ordered_decisions": 20993,
+  "baseline_commit": "c4f8a77a8703a2c9d13012e5d9c2f4a10f008b2f",
+  "baseline": {
+    "source_sha256": "971f82ba612c793168479ab26a2c94034b3f531f8de2e1e000e47579381f44ee",
+    "saving_calls": 258,
+    "risk_calls": 61,
+    "ontrack_calls": 15608,
+    "first_slow_car_pass": null,
+    "first_incident_response": null,
+    "samples": {
+      "104": {
+        "time_s": 7.766666666666667,
+        "lap": 1,
+        "station_m": 104.346,
+        "observed_speed_kmh": 216.55404000000001,
+        "route_target_kmh": 399.78660189075373,
+        "throttle": 0.6044181168474474,
+        "brake": 0.0,
+        "fuel_scale": 0.6044181168474474,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "700": {
+        "time_s": 20.7,
+        "lap": 1,
+        "station_m": 700.363,
+        "observed_speed_kmh": 110.59956000000001,
+        "route_target_kmh": 113.06472748904469,
+        "throttle": 0.0,
+        "brake": 0.030253910340788195,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "1600": {
+        "time_s": 43.8,
+        "lap": 1,
+        "station_m": 1599.478,
+        "observed_speed_kmh": 131.81616,
+        "route_target_kmh": 133.0568199273862,
+        "throttle": 0.20423696195249744,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "2000": {
+        "time_s": 51.3,
+        "lap": 1,
+        "station_m": 1999.352,
+        "observed_speed_kmh": 220.23756,
+        "route_target_kmh": 230.56463096745148,
+        "throttle": 0.0,
+        "brake": 0.11343860111784138,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      }
+    }
+  },
+  "candidate": {
+    "source_sha256": "2639d2c7de09b16df917fd8cb5b39d4eea5c839475c93b82cd027f4512f334ba",
+    "saving_calls": 0,
+    "risk_calls": 61,
+    "ontrack_calls": 15608,
+    "first_slow_car_pass": {
+      "time_s": 432.43333333333334,
+      "lap": 4,
+      "station_m": 609.174,
+      "observed_speed_kmh": 125.23607999999999,
+      "route_target_kmh": 131.5805693843566,
+      "throttle": 0.0,
+      "brake": 0.14029169109375556,
+      "fuel_scale": 1.0,
+      "risk": 0,
+      "passing_seat": 5,
+      "lane_target_m": 0.028390000000024427
+    },
+    "first_incident_response": null,
+    "samples": {
+      "104": {
+        "time_s": 7.766666666666667,
+        "lap": 1,
+        "station_m": 104.346,
+        "observed_speed_kmh": 216.55404000000001,
+        "route_target_kmh": 399.78660189075373,
+        "throttle": 1.0,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "700": {
+        "time_s": 20.7,
+        "lap": 1,
+        "station_m": 700.363,
+        "observed_speed_kmh": 110.59956000000001,
+        "route_target_kmh": 127.46220687912552,
+        "throttle": 0.35386235536201655,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "1600": {
+        "time_s": 43.8,
+        "lap": 1,
+        "station_m": 1599.478,
+        "observed_speed_kmh": 131.81616,
+        "route_target_kmh": 142.4421975413826,
+        "throttle": 0.5875212506070924,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "2000": {
+        "time_s": 51.3,
+        "lap": 1,
+        "station_m": 1999.352,
+        "observed_speed_kmh": 220.23756,
+        "route_target_kmh": 241.50517954944715,
+        "throttle": 0.0,
+        "brake": 0.04903898356606907,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      }
+    }
+  },
+  "limitation": "Fixed historical own legal inputs; no changed motion, lap time, overtaking success or crash rescue is demonstrated."
+}

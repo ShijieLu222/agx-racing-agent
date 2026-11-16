@@ -1,0 +1,154 @@
+{
+  "complete_export_verified": true,
+  "ordered_decisions": 17724,
+  "baseline_commit": "c4f8a77a8703a2c9d13012e5d9c2f4a10f008b2f",
+  "baseline": {
+    "source_sha256": "971f82ba612c793168479ab26a2c94034b3f531f8de2e1e000e47579381f44ee",
+    "saving_calls": 0,
+    "risk_calls": 110,
+    "ontrack_calls": 12749,
+    "first_slow_car_pass": null,
+    "first_incident_response": {
+      "time_s": 465.3333333333333,
+      "lap": 4,
+      "station_m": 3639.978,
+      "observed_speed_kmh": 128.31444,
+      "route_target_kmh": 107.1152859108644,
+      "throttle": 0.0,
+      "brake": 0.0,
+      "fuel_scale": 1.0,
+      "risk": 0.01598530553678733,
+      "passing_seat": null,
+      "lane_target_m": 0.0
+    },
+    "samples": {
+      "104": {
+        "time_s": 5.4,
+        "lap": 1,
+        "station_m": 104.655,
+        "observed_speed_kmh": 207.00324,
+        "route_target_kmh": 402.6997661718223,
+        "throttle": 1.0,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "700": {
+        "time_s": 16.4,
+        "lap": 1,
+        "station_m": 700.007,
+        "observed_speed_kmh": 117.81324000000001,
+        "route_target_kmh": 114.64207125299808,
+        "throttle": 0.0,
+        "brake": 0.029646699539102983,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "1600": {
+        "time_s": 37.5,
+        "lap": 1,
+        "station_m": 1600.246,
+        "observed_speed_kmh": 143.09496000000001,
+        "route_target_kmh": 134.81762648582293,
+        "throttle": 0.0,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "2000": {
+        "time_s": 44.43333333333333,
+        "lap": 1,
+        "station_m": 2000.537,
+        "observed_speed_kmh": 231.23232000000002,
+        "route_target_kmh": 231.3429628823613,
+        "throttle": 0.0,
+        "brake": 0.19349402298793447,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      }
+    }
+  },
+  "candidate": {
+    "source_sha256": "2639d2c7de09b16df917fd8cb5b39d4eea5c839475c93b82cd027f4512f334ba",
+    "saving_calls": 0,
+    "risk_calls": 110,
+    "ontrack_calls": 12749,
+    "first_slow_car_pass": null,
+    "first_incident_response": {
+      "time_s": 465.3333333333333,
+      "lap": 4,
+      "station_m": 3639.978,
+      "observed_speed_kmh": 128.31444,
+      "route_target_kmh": 107.1152859108644,
+      "throttle": 0.0,
+      "brake": 0.0,
+      "fuel_scale": 1.0,
+      "risk": 0.01598530553678733,
+      "passing_seat": null,
+      "lane_target_m": 0.0
+    },
+    "samples": {
+      "104": {
+        "time_s": 5.4,
+        "lap": 1,
+        "station_m": 104.655,
+        "observed_speed_kmh": 207.00324,
+        "route_target_kmh": 402.6997661718223,
+        "throttle": 1.0,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "700": {
+        "time_s": 16.4,
+        "lap": 1,
+        "station_m": 700.007,
+        "observed_speed_kmh": 117.81324000000001,
+        "route_target_kmh": 132.33874917625496,
+        "throttle": 0.19598744654579217,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "1600": {
+        "time_s": 37.5,
+        "lap": 1,
+        "station_m": 1600.246,
+        "observed_speed_kmh": 143.09496000000001,
+        "route_target_kmh": 150.21510187287015,
+        "throttle": 0.4881654729714994,
+        "brake": 0.0,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      },
+      "2000": {
+        "time_s": 44.43333333333333,
+        "lap": 1,
+        "station_m": 2000.537,
+        "observed_speed_kmh": 231.23232000000002,
+        "route_target_kmh": 250.70745224774413,
+        "throttle": 0.0,
+        "brake": 0.07705647846049198,
+        "fuel_scale": 1.0,
+        "risk": 0,
+        "passing_seat": null,
+        "lane_target_m": 0.0
+      }
+    }
+  },
+  "limitation": "Fixed historical own legal inputs; no changed motion, lap time, overtaking success or crash rescue is demonstrated."
+}

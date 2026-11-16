@@ -1,4 +1,4 @@
-"""AGX Formula Racing v8: distinguish normal hairpin motion from oversteer.
+"""AGX Formula Racing v9: warm-dry pace and mature fuel-demand estimation.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -56,12 +56,16 @@ def tyre_mu(observation):
     hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
     temps = [number(t, 80) for t in (car.get("tyre_temp_c") or [80])]
     cold_factor = max(0.80, 1 - 0.004 * max(0.0, 80 - min(temps)))
+    # Bounded recalibration from the dry Crossover comparison. Preserve v8's
+    # cold-tyre and wet-road estimate; the bonus fades rather than switching.
+    warm_dry = (1 + .28 * clip((min(temps) - 65) / 15, 0, 1)
+                * clip(1 - wet / .30, 0, 1))
     allocation = (observation.get("tyres") or {}).get("allocation") or {}
     compound = car.get("compound")
     spec = allocation.get(compound)
     compound_factor = SPEC_GRIP.get(spec, {"soft": 1.0, "medium": .96, "hard": .92}.get(compound, .92))
     return (BASE_TYRE_MU * (1 - 0.30 * wet) * max(0.65, 1 - 0.30 * wear)
-            * max(0.75, 1 - hot * 0.008) * cold_factor * compound_factor)
+            * max(0.75, 1 - hot * 0.008) * cold_factor * compound_factor * warm_dry)
 
 
 def longitudinal_grip(observation, geometry):
@@ -155,6 +159,10 @@ class Driver:
         self.available_braking = DRY_LATERAL_ACCEL
         self.fuel_sample = None
         self.fuel_per_m = None
+        self.fuel_origin = None
+        self.fuel_windows = []
+        self.fuel_warmed = False
+        self.fuel_stops = None
         self.fuel_power_scale = 1.0
         self.previous_preview = None
         self.planning_knots = None
@@ -335,14 +343,22 @@ class Driver:
         tracked = next((r for r in nearby if r.get("seat") == self.pass_seat), None)
         alongside = any(abs(number(r.get("gap_m"))) < 12 for r in nearby)
         stopped_pass = bool(tracked and speed < 8 and number(tracked.get("speed_mps")) < 3)
+        gentle = bool(near_rows) and max(abs(r[1]) for r in near_rows) < .025
+        moving_pass = bool(front and gentle and speed < 35
+                           and 3 <= number(front.get("speed_mps")) < 30
+                           and target > number(front.get("speed_mps")) + 5
+                           and number(front.get("gap_m")) > 12
+                           and abs(number(car.get("heading_error"))) < .12)
+        continue_pass = bool(tracked and gentle and speed < 40
+                             and number(tracked.get("speed_mps")) < 35)
         if self.pass_seat is not None:
             passed = tracked is None or number(tracked.get("gap_m")) < -15
-            if (passed or (not straight and not stopped_pass)) and not alongside:
+            if (passed or (not straight and not stopped_pass and not continue_pass)) and not alongside:
                 self.pass_seat, self.pass_lane = None, 0.0
         slow_clearance = bool(front and speed < 6
                               and number(front.get("speed_mps")) < 3
                               and number(front.get("gap_m")) >= 6)
-        if (self.pass_seat is None and front and (straight or slow_clearance)
+        if (self.pass_seat is None and front and (straight or slow_clearance or moving_pass)
                 and (number(front.get("gap_m")) > 12 or slow_clearance)):
             front_n = n + number(front.get("dn"))
             candidates = sorted((-3.0, 3.0), key=lambda x: -abs(x - front_n))
@@ -356,7 +372,20 @@ class Driver:
                     self.pass_seat, self.pass_lane = front.get("seat"), lane
                     break
         requested = clip(self.pass_lane, min(low, 0.0), max(high, 0.0))
+        # Recheck a committed lane every callback, including vehicles that were
+        # previously outside the observation window. Freeze lateral travel when
+        # that lane becomes occupied; current-clearance following still applies.
+        occupied = any(r.get("seat") != self.pass_seat
+                       and -18 < number(r.get("gap_m")) < 50
+                       and abs(n + number(r.get("dn")) - requested) < 2.6
+                       for r in nearby)
+        if self.pass_seat is not None and occupied:
+            requested = self.lane
         self.lane += clip(requested - self.lane, -0.85 * dt, 0.85 * dt)
+        if self.pass_seat is not None and not straight:
+            # An offset lane may have a tighter radius than the centreline.
+            curvature = max((abs(r[1]) for r in near_rows), default=0.0)
+            target *= math.sqrt(max(.6, 1 - curvature * max(abs(n), abs(self.lane))))
         # Collision constraint remains active while changing lanes. It is based
         # on current lateral clearance, not the hoped-for future passing lane.
         emergency = False
@@ -431,19 +460,39 @@ class Driver:
         car = observation["self"]
         distance = number(car.get("distance"))
         fuel = number(car.get("fuel_kg"), 60)
+        stops = int(number(car.get("pit_stops")))
+        if self.fuel_stops != stops:
+            self.fuel_sample = distance, fuel
+            self.fuel_stops = stops
+        if self.fuel_origin is None:
+            self.fuel_origin = distance
         if self.fuel_sample is None:
             self.fuel_sample = distance, fuel
         else:
             old_distance, old_fuel = self.fuel_sample
-            if distance - old_distance > 150 and old_fuel >= fuel:
-                rate = (old_fuel - fuel) / (distance - old_distance)
-                self.fuel_per_m = rate if self.fuel_per_m is None else (
-                    0.8 * self.fuel_per_m + 0.2 * rate)
+            if distance < old_distance or fuel > old_fuel + .01:
+                self.fuel_origin = distance
+                self.fuel_windows = []
+                self.fuel_warmed = False
+                self.fuel_per_m = None
+                self.fuel_sample = distance, fuel
+            elif not self.fuel_warmed or car.get("pit_state"):
+                # Launch energy per metre and pit travel do not represent a lap.
+                self.fuel_sample = distance, fuel
+                self.fuel_warmed = distance - self.fuel_origin >= 300
+            elif distance - old_distance >= 250 and old_fuel >= fuel:
+                self.fuel_windows.append((distance - old_distance, old_fuel - fuel))
+                self.fuel_windows = self.fuel_windows[-12:]
+                span = sum(d for d, _ in self.fuel_windows)
+                self.fuel_per_m = sum(used for _, used in self.fuel_windows) / span
                 self.fuel_sample = distance, fuel
         length = number(observation.get("track_length_m"))
         remaining = max(0.0, (number(observation.get("laps_total"), 4)
                        - number(car.get("lap"))) * length - number(car.get("s")))
-        projected = remaining * (self.fuel_per_m or 0.0)
+        span = sum(d for d, _ in self.fuel_windows)
+        mature = span >= min(1500, max(750, length * .25)) and len(self.fuel_windows) >= 3
+        # A genuinely almost-empty tank may need saving before estimate maturity.
+        projected = remaining * (self.fuel_per_m or 0.0) if mature or fuel < .5 else 0.0
         self.fuel_power_scale = min(1.0, fuel / projected) if projected > 0 else 1.0
         return self.fuel_power_scale < 1.0
 
