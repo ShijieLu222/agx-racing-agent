@@ -25,7 +25,7 @@ DRAG_COEFFICIENT = 0.7
 ROLLING_FORCE_N = 100.0
 
 
-def run(track, speed_cap, seconds=400.0):
+def run(track, speed_cap, seconds=400.0, body_sideslip=False):
     old_cap = agent.DRY_SPEED_CAP
     agent.DRY_SPEED_CAP = speed_cap
     length = track["length"]
@@ -36,6 +36,7 @@ def run(track, speed_cap, seconds=400.0):
     driver = agent.Driver()
     try:
         for decision in range(int(seconds * 30)):
+            beta = math.atan(.5 * math.tan(wheel_angle)) if body_sideslip else 0.0
             rows = []
             for distance in range(15, 361, 15):
                 curvature, grade, left, right = track_data.geometry_at(length, station + distance)
@@ -48,7 +49,7 @@ def run(track, speed_cap, seconds=400.0):
                 "self": {
                     "s": station, "distance": travelled, "n": offset,
                     "heading_error": heading, "speed_mps": speed,
-                    "vx": speed, "vy": 0, "yaw_rate": yaw_rate,
+                    "vx": speed * math.cos(beta), "vy": speed * math.sin(beta), "yaw_rate": yaw_rate,
                     "steer": wheel_angle, "fuel_kg": 60, "pu_temp_c": 90,
                     "tyre_wear": [0] * 4, "tyre_temp_c": [85] * 4,
                     "ers_soc_mj": 3, "effective_mass_kg": MASS_KG,
@@ -70,10 +71,11 @@ def run(track, speed_cap, seconds=400.0):
                          - action["brake"] * BRAKE_FORCE_N
                          - DRAG_COEFFICIENT * speed * speed - ROLLING_FORCE_N)
                 speed = max(0.0, speed + (force / MASS_KG - 9.81 * grade) * dt)
-                yaw_rate = speed / 3.4 * math.tan(wheel_angle)
-                along = speed * math.cos(heading) / max(0.3, 1 - offset * curvature)
+                beta = math.atan(.5 * math.tan(wheel_angle)) if body_sideslip else 0.0
+                yaw_rate = speed * math.cos(beta) / 3.4 * math.tan(wheel_angle)
+                along = speed * math.cos(heading + beta) / max(0.3, 1 - offset * curvature)
                 heading += (yaw_rate - along * curvature) * dt
-                offset += speed * math.sin(heading) * dt
+                offset += speed * math.sin(heading + beta) * dt
                 station = (station + along * dt) % length
                 travelled += along * dt
                 max_offset = max(max_offset, abs(offset))
@@ -84,6 +86,7 @@ def run(track, speed_cap, seconds=400.0):
                 break
         return {
             "track": track["id"], "assumed_speed_cap_mps": speed_cap,
+            "kinematic_body_sideslip": body_sideslip,
             "assumed_driver_lateral_mps2": agent.DRY_LATERAL_ACCEL,
             "approx_one_lap_seconds": round((decision + 1) / 30, 3),
             "completed_one_synthetic_lap": travelled >= length,
@@ -100,6 +103,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compare", nargs="+", type=float,
                         default=[agent.DRY_SPEED_CAP])
+    parser.add_argument("--body-sideslip", action='store_true',
+                        help='Include normal kinematic body sideslip at a centered wheelbase; still no dynamic tyre model.')
     args = parser.parse_args()
     if any(v is not None and (not math.isfinite(v) or v <= 0) for v in args.compare):
         parser.error("speed caps must be finite positive values")
@@ -110,7 +115,7 @@ def main():
                         "brake_force_n": BRAKE_FORCE_N,
                         "drag_coefficient": DRAG_COEFFICIENT,
                         "rolling_force_n": ROLLING_FORCE_N},
-        "results": [run(track, cap) for cap in args.compare
+        "results": [run(track, cap, body_sideslip=args.body_sideslip) for cap in args.compare
                     for track in track_data.TRACKS.values()],
     }
     print(json.dumps(output, indent=2, allow_nan=False))

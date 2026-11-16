@@ -1,0 +1,58 @@
+{
+  "verified_calls": 25145,
+  "counts": {
+    "ontrack": 18945,
+    "brake": 5903,
+    "coast": 874,
+    "full_throttle": 5725,
+    "stability": 1133,
+    "front_slide": 228,
+    "rear_slide": 1198,
+    "battery_empty": 1966,
+    "mode3": 1518,
+    "throttle_at_grip_limit": 1455,
+    "brake_at_grip_limit": 190,
+    "grip_zero": 2,
+    "mode1": 9993,
+    "mode0": 6283,
+    "mode2": 1151
+  },
+  "fuel": {
+    "start": 8.0,
+    "end": 2.514,
+    "used": 5.486000000000001
+  },
+  "stats": {
+    "pu_temp_c": [
+      58.33,
+      64.94110160992346,
+      88.0
+    ],
+    "speed_mps": [
+      0.0,
+      43.157129121140144,
+      94.5769
+    ],
+    "ers_soc_mj": [
+      0.0,
+      1.039706840855107,
+      3.5045
+    ],
+    "tyre_temp": [
+      51.75,
+      61.94224452362101,
+      88.0
+    ],
+    "heading_abs": [
+      0.0,
+      0.016378145684877277,
+      0.16182
+    ],
+    "beta_abs": [
+      0.0,
+      0.009102538360252549,
+      0.13296981116362336
+    ]
+  },
+  "note": "Fuel here is from first/last legal decision, before the exact terminal frame. Use podium-comparison terminal fuel for finish consumption."
+}

@@ -46,5 +46,17 @@
   "all_uploaded_file_hashes_match": true,
   "last_checked_at": "2026-11-16T02:53:12.395487+00:00",
   "my_competitions_display": "多人赛车 · 已发布代码 v7",
-  "new_official_race_result": null
+  "new_official_race_result": {
+    "match_id": "1482e250-9d95-49eb-8f78-77df3daa1810",
+    "track": "highland",
+    "rank": 3,
+    "laps": 4,
+    "total_time_s": 666.155,
+    "gap_to_winner_s": 29.008,
+    "fastest_lap_s": 154.54,
+    "initial_fuel_kg": 8,
+    "terminal_fuel_kg": 2.5133,
+    "nominal_fuel_consumed_kg": 5.4867,
+    "full_recorded_action_match": true
+  }
 }

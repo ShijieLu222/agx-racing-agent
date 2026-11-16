@@ -1,0 +1,50 @@
+{
+  "admission": "passed",
+  "agent_id": "2756a993-5961-40d7-85ac-c534bb4d6e9e",
+  "bundle_sha256": "f9da6220f841512ddc7ae8bdbdf3ea8253ba8369b448c6a0cd42c4c8857a5f47",
+  "compressed_bytes": 167263,
+  "contract_id": "rsi-racing-4.4",
+  "created_at": "2026-11-16T04:42:58.635282+00:00",
+  "expanded_bytes": 498818,
+  "fault_code": null,
+  "files": {
+    "agent.py": {
+      "bytes": 31761,
+      "sha256": "971f82ba612c793168479ab26a2c94034b3f531f8de2e1e000e47579381f44ee"
+    },
+    "design.json": {
+      "bytes": 1055,
+      "sha256": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "track_crossover.py": {
+      "bytes": 146027,
+      "sha256": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5"
+    },
+    "track_data.py": {
+      "bytes": 3234,
+      "sha256": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7"
+    },
+    "track_highland.py": {
+      "bytes": 174479,
+      "sha256": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33"
+    },
+    "track_parkland.py": {
+      "bytes": 142262,
+      "sha256": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c"
+    }
+  },
+  "game_id": "racing",
+  "id": "2d4d8d73-8185-4f69-b3bd-6175d8f805ee",
+  "number": 8,
+  "profile_digest": "9ac1e96a97aa638726da610004276167288e3dfdb22afc84ade6c35f8084d2fb",
+  "rules_version": "rsi-racing-4.4",
+  "runtime_id": "python-agent-v1",
+  "tensor_bytes": 0,
+  "version_id": "46ff6cc3-bcbf-4522-b5c6-9c023e2f353c",
+  "platform": "AGX",
+  "fuel_load_kg": 8,
+  "all_uploaded_file_hashes_match": true,
+  "last_checked_at": "2026-11-16T04:46:41.675858+00:00",
+  "new_official_race_result": null,
+  "my_competitions_display": "多人赛车 · 已发布代码 v8"
+}

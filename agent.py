@@ -1,4 +1,4 @@
-"""AGX Formula Racing v7: tyre-aware grip, combined braking and spin recovery.
+"""AGX Formula Racing v8: distinguish normal hairpin motion from oversteer.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -88,10 +88,18 @@ def stability_state(car, geometry):
     beta = math.atan2(vy, max(6.0, vx))
     along = (vx * math.cos(heading) - vy * math.sin(heading)) / max(.3, 1 - number(car.get("n")) * geometry[0])
     yaw_error = number(car.get("yaw_rate")) - along * geometry[0]
-    # Detect growing oversteer earlier than the old 0.30 rad heading threshold,
-    # while allowing ordinary curvature tracking and small steady sideslip.
-    risk = max((abs(beta) - .035) / .14, (abs(heading) - .08) / .28,
-               (abs(yaw_error) - .22) / .6 * clip((abs(beta) - .015) / .04, 0, 1))
+    # In a slow hairpin the velocity vector can follow the road while the body
+    # points across it: heading and beta compensate. V7 mistakenly braked that
+    # normal motion down to its low-speed recovery cutoff. Use course error for
+    # path departure, and require excess yaw in the direction of rotation plus
+    # opposing lateral velocity before invoking early oversteer recovery.
+    course_error = (heading + beta + math.pi) % (2 * math.pi) - math.pi
+    yaw = number(car.get("yaw_rate"))
+    oversteer = yaw * yaw_error > 0 and yaw * beta < 0
+    evidence = clip((abs(yaw_error) - .06) / .12, 0, 1) if oversteer else 0.0
+    early_spin = max((abs(beta) - .035) / .14, (abs(yaw_error) - .22) / .6) * evidence
+    risk = max(early_spin, (abs(course_error) - .12) / .28,
+               (abs(heading) - .30) / .35, (abs(beta) - .20) / .25)
     return clip(risk, 0, 1) * clip((speed - 5) / 10, 0, 1), beta, yaw_error
 
 
@@ -326,14 +334,15 @@ class Driver:
         front = min(leaders, key=lambda r: r["gap_m"]) if leaders else None
         tracked = next((r for r in nearby if r.get("seat") == self.pass_seat), None)
         alongside = any(abs(number(r.get("gap_m"))) < 12 for r in nearby)
+        stopped_pass = bool(tracked and speed < 8 and number(tracked.get("speed_mps")) < 3)
         if self.pass_seat is not None:
             passed = tracked is None or number(tracked.get("gap_m")) < -15
-            if (passed or not straight) and not alongside:
+            if (passed or (not straight and not stopped_pass)) and not alongside:
                 self.pass_seat, self.pass_lane = None, 0.0
         slow_clearance = bool(front and speed < 6
                               and number(front.get("speed_mps")) < 3
-                              and number(front.get("gap_m")) >= 8)
-        if (self.pass_seat is None and front and straight
+                              and number(front.get("gap_m")) >= 6)
+        if (self.pass_seat is None and front and (straight or slow_clearance)
                 and (number(front.get("gap_m")) > 12 or slow_clearance)):
             front_n = n + number(front.get("dn"))
             candidates = sorted((-3.0, 3.0), key=lambda x: -abs(x - front_n))

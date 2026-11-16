@@ -64,12 +64,17 @@ def analyze(root, own):
               'limitations': 'Public 24 Hz samples, not private controller observations. '
               'Time fractions use left-held samples; lap/sector crossing times are interpolated. '
               'No claim that changed actions produce these historical trajectories.'}
-    for seat in dict.fromkeys((own, winner)):
+    podium = [c['seat'] for c in sorted(descriptor['result']['classification'], key=lambda c:c['position']) if c['position'] <= 3]
+    for seat in dict.fromkeys((own, winner, *podium)):
         samples = [(r['time'], next(c for c in r['cars'] if c['seat'] == seat)) for r in frames]
         active = [(t, c) for t, c in samples if c['status'] == 'racing']
         crossings = {0: start / descriptor['physics_hz']}
         sectors = {0: start / descriptor['physics_hz']}
         totals = collections.defaultdict(float)
+        ontrack = collections.defaultdict(float)
+        bins = [collections.defaultdict(float) for _ in range(20)]
+        slow_spells = []
+        slow_start = None
         for (t, c), (nt, nc) in zip(samples, samples[1:]):
             if c['status'] != 'racing':
                 continue
@@ -77,10 +82,29 @@ def analyze(root, own):
             totals['active_seconds'] += dt
             for key, value in [('throttle', c['throttle']), ('brake', c['brake']),
                                ('braking', c['brake'] > .05), ('full_throttle', c['throttle'] > .95),
+                               ('coasting', c['throttle'] < .01 and c['brake'] < .01),
                                ('empty_battery', c['ers_soc_mj'] < .02),
                                ('attack', c['ers_mode'] == 3), ('aero_x', c['aero_mode'] == 1),
                                ('aid_available', c['aid_available']), ('aid_active', c['aid_active'])]:
                 totals[key] += dt * value
+                if not c.get('pit_state', 0):
+                    ontrack[key] += dt * value
+            if not c.get('pit_state', 0):
+                ontrack['seconds'] += dt
+                bucket = bins[min(19, max(0, int(c['s'] / length * 20)))]
+                bucket['seconds'] += dt
+                bucket['speed_integral'] += dt * c['speed_mps'] * 3.6
+                bucket['below_1mps_seconds'] += dt * (c['speed_mps'] < 1)
+                if c['speed_mps'] < 1:
+                    if slow_start is None:
+                        slow_start = (t, c['s'], c['lap'])
+                elif slow_start is not None:
+                    if t - slow_start[0] > 2:
+                        slow_spells.append({'race_start_s': slow_start[0] - start / descriptor['physics_hz'],
+                                            'duration_s': t - slow_start[0], 'station_m':slow_start[1], 'lap':slow_start[2]+1})
+                    slow_start = None
+            else:
+                slow_start = None
             d0, d1 = c['lap'] * length + c['s'], nc['lap'] * length + nc['s']
             if d1 > d0:
                 for k in range(int(d0 // length) + 1, int(d1 // length) + 1):
@@ -91,11 +115,19 @@ def analyze(root, own):
         events = [e for e in streams['public_events'] if e['phase'] == 'race' and seat in e['seats']]
         classification = next(c for c in descriptor['result']['classification'] if c['seat'] == seat)
         result['cars'].append({
-            'seat': seat, 'role': 'own' if seat == own else 'winner', 'classification': classification,
+            'seat': seat, 'role': 'own' if seat == own else ('winner' if seat == winner else 'runner_up'), 'classification': classification,
             'design': next(c['design_summary'] for c in meta['cars'] if c['seat'] == seat),
             'laps_seconds': [crossings[k] - crossings[k-1] for k in sorted(crossings) if k > 0 and k-1 in crossings],
             'sector_times': {str(k): v - sectors[k-1] for k, v in sectors.items() if k-1 in sectors},
             'time_weighted': {k: v / totals['active_seconds'] for k, v in totals.items() if k != 'active_seconds'},
+            'time_weighted_ontrack': {k:v/ontrack['seconds'] for k,v in ontrack.items() if k!='seconds'},
+            'ontrack_distance_bins': [{'start_m':i*length/20,'end_m':(i+1)*length/20,
+                                       'seconds':b['seconds'], 'below_1mps_seconds':b['below_1mps_seconds'],
+                                       'mean_speed_kmh':b['speed_integral']/b['seconds'] if b['seconds'] else None} for i,b in enumerate(bins)],
+            'slow_spells':slow_spells,
+            'last_lap_station_samples': {str(s):{k:c[k] for k in ('s','speed_mps','throttle','brake','ers_soc_mj','tyre_temp_c') if k in c}
+                                        for s in (235,245,6585,6600,6650,6675)
+                                        for c in [min((c for _,c in active if c['lap']==3),key=lambda c:abs(c['s']-s),default={})]},
             'fuel_used_kg': samples[0][1]['fuel_kg'] - samples[-1][1]['fuel_kg'],
             'fuel_remaining_kg': samples[-1][1]['fuel_kg'],
             'speed_max_kmh': max(c['speed_mps'] for _, c in active) * 3.6,

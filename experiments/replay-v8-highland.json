@@ -1,0 +1,94 @@
+{
+  "format": "agx-racing-historical-observation-check.v1",
+  "python_version": "3.13.3",
+  "rules_version": "rsi-racing-4.4",
+  "export_integrity": {
+    "complete": true,
+    "rows": 25145,
+    "raw_bytes": 83952464,
+    "decision_sha256": "98259e69341d3f98bc7a524a3b9204dad80bcc84009a9c7387de4cd89b291303",
+    "rows_bytes_sha256_seat_counts_verified": true
+  },
+  "recorded_faults_for_selected_seat": 0,
+  "candidate": {
+    "agent_source_sha256": "971f82ba612c793168479ab26a2c94034b3f531f8de2e1e000e47579381f44ee",
+    "calls": 25145,
+    "exceptions": 0,
+    "invalid_actions": 0,
+    "changed_actions_vs_recorded": 2548,
+    "cpu_act_seconds": 7.572023,
+    "cpu_act_p50_ms": 0.302,
+    "cpu_act_p99_ms": 0.563,
+    "cpu_act_max_ms": 2.058,
+    "calls_above_200ms": 0,
+    "action_ers_mode_switches": {
+      "qualifying": 341,
+      "race": 1179
+    },
+    "direct_throttle_brake_switches": {
+      "qualifying": 263,
+      "race": 913
+    },
+    "simultaneous_throttle_brake_calls": 0,
+    "first_exception_types": [],
+    "race": {
+      "calls": 19985,
+      "duration_s": 666.1666333333333,
+      "observed_speed_mps": 41.98737256522255,
+      "selected_target_mps": 55.535647802281794,
+      "throttle": 0.44929564708669556,
+      "brake": 0.03697805095814185,
+      "braking": 0.2826624609788598,
+      "grip_scale": 1.0,
+      "slip_exposure_s": 0.0,
+      "sliding": 0.12269182500334157,
+      "pit_request_calls": 466
+    },
+    "race_wet_ge_0_9": {
+      "calls": 0,
+      "duration_s": 0
+    }
+  },
+  "limitation": "Policies run on identical recorded legal observations; no physics is advanced. Target/action changes are not new lap-time, ranking or collision results. CPU includes lightweight target probes but excludes JSON, validation and platform overhead; this does not prove the complete server CPU budget.",
+  "baseline": {
+    "agent_source_sha256": "bd14c27b82fd467532408ff3e48e7cb3f8b9e5174195876e22f9743c9d29ef87",
+    "calls": 25145,
+    "exceptions": 0,
+    "invalid_actions": 0,
+    "changed_actions_vs_recorded": 0,
+    "cpu_act_seconds": 7.486522,
+    "cpu_act_p50_ms": 0.299,
+    "cpu_act_p99_ms": 0.555,
+    "cpu_act_max_ms": 1.079,
+    "calls_above_200ms": 0,
+    "action_ers_mode_switches": {
+      "qualifying": 329,
+      "race": 1119
+    },
+    "direct_throttle_brake_switches": {
+      "qualifying": 251,
+      "race": 855
+    },
+    "simultaneous_throttle_brake_calls": 0,
+    "first_exception_types": [],
+    "race": {
+      "calls": 19985,
+      "duration_s": 666.1666333333333,
+      "observed_speed_mps": 41.98737256522255,
+      "selected_target_mps": 55.535647802281794,
+      "throttle": 0.4194851013214621,
+      "brake": 0.0374554223611439,
+      "braking": 0.3143859051481576,
+      "grip_scale": 1.0,
+      "slip_exposure_s": 0.0,
+      "sliding": 0.12269182500334157,
+      "pit_request_calls": 466
+    },
+    "race_wet_ge_0_9": {
+      "calls": 0,
+      "duration_s": 0
+    }
+  },
+  "candidate_changed_actions_vs_baseline": 2548,
+  "baseline_commit": "ab4a19e730afee305488a9f6215b1e325d3b4215"
+}
