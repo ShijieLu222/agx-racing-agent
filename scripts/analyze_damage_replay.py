@@ -153,6 +153,8 @@ def plot(report, corners, path):
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=180)
     fig.savefig(path.with_suffix('.svg'))
+    svg = path.with_suffix('.svg')
+    svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines()) + '\n')
     plt.close(fig)
 
 
