@@ -45,7 +45,7 @@
       "radiator_opening": 0.7
     },
     "power_unit": {
-      "fuel_load_kg": 15,
+      "fuel_load_kg": 8,
       "ers_harvest_level": 5
     },
     "tyres": {

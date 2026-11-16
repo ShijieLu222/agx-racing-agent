@@ -1,4 +1,4 @@
-"""AGX Formula Racing v5: telemetry-based pace, without a fixed speed ceiling.
+"""AGX Formula Racing v7: tyre-aware grip, combined braking and spin recovery.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -26,6 +26,10 @@ COMPOUNDS = ("soft", "medium", "hard")
 # Downforce changes the available lateral force with speed. These coefficients
 # still need validation in a new race; public replays do not expose tyre physics.
 BASE_TYRE_MU = 1.75
+LATERAL_RESERVE = 0.92
+# Relative planning hypotheses. Use the published circuit allocation: a medium
+# C2 at Crossover is not the same specification as a medium C4 at Parkland.
+SPEC_GRIP = {"C1": 0.90, "C2": 0.94, "C3": 0.97, "C4": 1.0, "C5": 1.02}
 DRY_LATERAL_ACCEL = BASE_TYRE_MU * 9.81
 DRY_SPEED_CAP = None  # Optional cap for the diagnostic script; disabled in races.
 
@@ -42,6 +46,53 @@ def number(value, default=0.0):
 
 def maximum(values, default=0.0):
     return max((number(v, default) for v in (values or [])), default=default)
+
+
+def tyre_mu(observation):
+    """Shared planning hypothesis, not a measurement of the private tyre model."""
+    car = observation["self"]
+    wet = clip(number((observation.get("weather") or {}).get("track_wetness")), 0, 1)
+    wear = clip(maximum(car.get("tyre_wear")), 0, 1)
+    hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
+    temps = [number(t, 80) for t in (car.get("tyre_temp_c") or [80])]
+    cold_factor = max(0.80, 1 - 0.004 * max(0.0, 80 - min(temps)))
+    allocation = (observation.get("tyres") or {}).get("allocation") or {}
+    compound = car.get("compound")
+    spec = allocation.get(compound)
+    compound_factor = SPEC_GRIP.get(spec, {"soft": 1.0, "medium": .96, "hard": .92}.get(compound, .92))
+    return (BASE_TYRE_MU * (1 - 0.30 * wet) * max(0.65, 1 - 0.30 * wear)
+            * max(0.75, 1 - hot * 0.008) * cold_factor * compound_factor)
+
+
+def longitudinal_grip(observation, geometry):
+    """Remaining tyre force after observed lateral load; not aero drag.
+
+    Do not substitute preview/current-road curvature here: an approaching bend
+    is not lateral force already being generated, especially on unknown maps.
+    The route planner separately budgets the future combined demand.
+    """
+    car = observation["self"]
+    mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
+    speed = max(0.0, number(car.get("speed_mps")))
+    grip = tyre_mu(observation) * (mass * 9.81 + max(0.0, number(car.get("downforce_n"))))
+    lateral = mass * max(abs(number(car.get("g_lat"))) * 9.81,
+                         speed * abs(number(car.get("yaw_rate"))))
+    return math.sqrt(max(0.0, grip * grip - lateral * lateral))
+
+
+def stability_state(car, geometry):
+    """Instantaneous risk; flags alone cannot latch a slow driving mode."""
+    speed = max(0.0, number(car.get("speed_mps")))
+    vx, vy = number(car.get("vx"), speed), number(car.get("vy"))
+    heading = number(car.get("heading_error"))
+    beta = math.atan2(vy, max(6.0, vx))
+    along = (vx * math.cos(heading) - vy * math.sin(heading)) / max(.3, 1 - number(car.get("n")) * geometry[0])
+    yaw_error = number(car.get("yaw_rate")) - along * geometry[0]
+    # Detect growing oversteer earlier than the old 0.30 rad heading threshold,
+    # while allowing ordinary curvature tracking and small steady sideslip.
+    risk = max((abs(beta) - .035) / .14, (abs(heading) - .08) / .28,
+               (abs(yaw_error) - .22) / .6 * clip((abs(beta) - .015) / .04, 0, 1))
+    return clip(risk, 0, 1) * clip((speed - 5) / 10, 0, 1), beta, yaw_error
 
 
 def preview_rows(observation):
@@ -166,14 +217,10 @@ class Driver:
 
     def speed_plan(self, observation, rows, geometry, dt):
         car = observation["self"]
-        wet = clip(number((observation.get("weather") or {}).get("track_wetness")), 0, 1)
-        wear = clip(maximum(car.get("tyre_wear")), 0, 1)
-        hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
         # No flag-driven grip ratchet, 0.88*speed target, or slow target recovery.
         # Slip flags alone do not measure loss of control. Heading, sideslip,
         # road clearance and visible collision threats are handled explicitly.
-        mu = BASE_TYRE_MU * (1 - 0.30 * wet) * max(0.65, 1 - 0.30 * wear)
-        mu *= max(0.75, 1 - hot * 0.008)
+        mu = tyre_mu(observation)
         speed = max(0.0, number(car.get("speed_mps")))
         mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
         downforce = max(0.0, number(car.get("downforce_n")))
@@ -204,10 +251,15 @@ class Driver:
         self.free_target = free_target
         def corner_speed(kappa):
             # Solve v^2*kappa <= mu*(g + F_down(v)/mass).
-            denominator = abs(kappa) - mu * aero_coefficient / mass
+            lateral_mu = mu * LATERAL_RESERVE
+            denominator = abs(kappa) - lateral_mu * aero_coefficient / mass
             if denominator <= 0:
                 return free_target
-            return min(free_target, math.sqrt(mu * 9.81 / denominator))
+            return min(free_target, math.sqrt(lateral_mu * 9.81 / denominator))
+        def segment_braking(v2, kappa):
+            capacity = mu * (9.81 + aero_coefficient * v2 / mass)
+            lateral = v2 * abs(kappa)
+            return min(braking, math.sqrt(max(0.0, capacity * capacity - lateral * lateral)))
         curve, grade, width_left, width_right = geometry
         target = corner_speed(curve)
         planning = [row for row in rows if row[0] <= horizon]
@@ -232,30 +284,30 @@ class Driver:
             reaction = 3.0 + dt * speed
             next_distance = max(0.0, planning[-1][0] - reaction)
             next_grade = planning[-1][2]
+            next_curve = planning[-1][1]
             for row in reversed(planning):
                 distance, kappa, slope = row[:3]
                 distance = max(0.0, distance - reaction)
                 corner = corner_speed(kappa)
-                decel = braking + 9.81 * min(slope, next_grade)
+                gap = max(0.0, next_distance - distance)
+                grade_accel = 9.81 * min(slope, next_grade)
+                trial_v2 = min(corner * corner, max(0.0, envelope * envelope + 2 * (braking + grade_accel) * gap))
+                decel = segment_braking(trial_v2, max(abs(kappa), abs(next_curve))) + grade_accel
                 envelope = min(corner, math.sqrt(max(0.0, envelope * envelope
-                                  + 2 * decel * max(0.0, next_distance - distance))))
-                next_distance, next_grade = distance, slope
-            decel = braking + 9.81 * min(grade, next_grade)
+                                  + 2 * decel * gap)))
+                next_distance, next_grade, next_curve = distance, slope, kappa
+            trial_v2 = min(target * target, max(0.0, envelope * envelope + 2 * braking * next_distance))
+            decel = segment_braking(trial_v2, max(abs(curve), abs(next_curve))) + 9.81 * min(grade, next_grade)
             target = min(target, math.sqrt(max(0.0, envelope * envelope
                                               + 2 * decel * next_distance)))
         self.last_target = max(3.0, target)
         target = self.last_target
         margin = min(width_left - number(car.get("n")),
                      width_right + number(car.get("n")))
-        heading = abs(number(car.get("heading_error")))
-        sideslip = abs(math.atan2(number(car.get("vy")),
-                                 max(6.0, number(car.get("vx"), speed))))
         if margin < 1.5:
             target = min(target, 11.0 + 5.0 * max(0.0, margin))
-        elif heading > 0.30:
-            target = min(target, 18.0)
-        if heading > 0.65 or sideslip > 0.25:
-            target = min(target, 8.0)
+        # Pose recovery is a force constraint in act(), not a discontinuous
+        # 18/8 m/s target whose derivative can request a full-brake impulse.
         return max(3.0, target)
 
     def traffic_plan(self, observation, rows, target, dt):
@@ -386,6 +438,44 @@ class Driver:
         self.fuel_power_scale = min(1.0, fuel / projected) if projected > 0 else 1.0
         return self.fuel_power_scale < 1.0
 
+    def energy_mode(self, observation, geometry, force, braking_rate, eligible):
+        """Choose deployment from useful demand and a conservative friction circle.
+
+        This selects an ERS mode only: it never caps the throttle or stores a
+        lower speed target. No fixed SOC reserve or recovery timer is added.
+        Public replay evidence showed v5 spending attack mostly in tight bends
+        and reaching the subsequent straights empty. Actual savings need a race.
+        """
+        if self.braking:
+            return 0
+        if not eligible:
+            return 1
+        car = observation["self"]
+        drives = car.get("drive_force_n") or []
+        if len(drives) < 4:
+            return 1  # No evidence that an extra mode supplies useful force.
+        neutral_force = max(0.0, number(drives[1]))
+        balanced_force = max(neutral_force, number(drives[2]))
+        mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
+        speed = max(0.0, number(car.get("speed_mps")))
+        normal = mass * 9.81 + max(0.0, number(car.get("downforce_n")))
+        grip = tyre_mu(observation) * normal
+        lateral = mass * max(speed * speed * abs(geometry[0]),
+                             abs(number(car.get("g_lat"))) * 9.81)
+        longitudinal = math.sqrt(max(0.0, grip * grip - lateral * lateral))
+        useful_force = min(max(0.0, force), longitudinal)
+        # Request no extra energy when neutral already meets the wheel-force
+        # demand, or when an approaching braking envelope is falling.
+        if useful_force <= neutral_force * 1.02 or braking_rate < -0.5:
+            return 1
+        if (useful_force > balanced_force * 1.02
+                and lateral < grip * 0.65
+                and number(drives[3]) > balanced_force * 1.02):
+            return 3
+        # Balanced is useful only if it really adds force over neutral. Under
+        # lateral load this avoids spending attack while keeping full throttle.
+        return 2 if balanced_force > neutral_force * 1.02 else 1
+
     def act(self, observation):
         car = observation.get("self") or {}
         phase = observation.get("phase")
@@ -414,14 +504,20 @@ class Driver:
         speed = max(0.0, number(car.get("speed_mps")))
         kappa, grade, _, _ = geometry
         heading = number(car.get("heading_error"))
-        sideslip = math.atan2(number(car.get("vy")), max(6.0, number(car.get("vx"), speed)))
+        stability, sideslip, yaw_error = stability_state(car, geometry)
         desired_heading = -math.atan2(0.9 * (number(car.get("n")) - lane), speed + 7)
-        yaw_error = number(car.get("yaw_rate")) - speed * kappa
         # Yaw response per radian of steer grows with speed. A fixed large
         # derivative gain can alternate wheel commands at the 30 Hz boundary.
         yaw_gain = 0.06 / (1.0 + speed / 25.0)
         angle = (math.atan(3.4 * kappa) + 0.66 * (desired_heading - heading)
                  - 0.18 * sideslip - yaw_gain * yaw_error)
+        if sideslip * yaw_error < 0 and abs(sideslip) > .035:
+            # During oversteer, align the front wheels with their local travel
+            # direction and damp excess yaw, instead of demanding more path force.
+            front_flow = math.atan2(number(car.get("vy")) + 1.7 * number(car.get("yaw_rate")),
+                                    max(6.0, number(car.get("vx"), speed)))
+            recovery_angle = front_flow - 2 * yaw_gain * yaw_error
+            angle += stability * (recovery_angle - angle)
         # Respect the published mechanical slew, using measured wheel angle.
         actual = number(car.get("steer"), self.last_steer * 0.3)
         desired = clip(angle, -0.3, 0.3)
@@ -442,6 +538,12 @@ class Driver:
         mass = max(300.0, number(car.get("effective_mass_kg"), 1000))
         drag = max(0.0, number(car.get("drag_n"))) + max(0.0, number(car.get("rolling_resistance_n")))
         force = mass * (accel + 9.81 * grade) + drag
+        grip_force = longitudinal_grip(observation, geometry)
+        if stability > 0:
+            # Mild state-proportional recovery braking, limited below by the
+            # remaining friction circle. No timer or persistent reduced target.
+            recovery_force = mass * .30 * tyre_mu(observation) * 9.81 * stability
+            force = min(force, -recovery_force)
         wet = number((observation.get("weather") or {}).get("track_wetness"))
         soc = number(car.get("ers_soc_mj"))
         # Amplitude hysteresis, never a minimum holding time: a newly required
@@ -452,16 +554,15 @@ class Driver:
             self.braking = False
         self.in_straight = straight
         power_safe = (abs(heading) < 0.2
-                      and abs(sideslip) < 0.25 and not emergency)
-        # Use attack on corner exits as well as straights. No frozen battery
-        # reserve or arbitrary waiting period restricts requested acceleration.
+                      and abs(sideslip) < 0.25 and stability == 0 and not emergency)
+        # Corner exits remain eligible immediately; choose the power tier using
+        # wheel-force demand and the lateral load, rather than error alone.
         boost_error = 0.5 if self.boosting else 1.5
-        self.boosting = bool(error > boost_error and soc > 0.0 and power_safe
-                             and not self.braking)
+        eligible = bool(error > boost_error and soc > 0.0 and power_safe
+                        and not self.braking)
+        mode = self.energy_mode(observation, geometry, force, braking_rate, eligible)
+        self.boosting = mode in (2, 3)
         boost = self.boosting
-        mode = 3 if boost else 1
-        if self.braking:
-            mode = 0
         drives = car.get("drive_force_n") or []
         drive = number(drives[mode]) if len(drives) > mode else 0.0
         brake_capacity = max(1.0, number(car.get("brake_force_max_n"), mass * 12))
@@ -471,6 +572,12 @@ class Driver:
         else:
             brake = 0.0
             throttle = clip(force / drive, 0, 1) if drive > 100 else float(force > 0)
+        # Braking and propulsion share the same remaining tyre-force budget.
+        # An overspeeding car already using all lateral grip must coast while
+        # unwinding, rather than demand another full longitudinal tyre force.
+        brake = min(brake, grip_force / brake_capacity)
+        if drive > 100:
+            throttle = min(throttle, grip_force / drive)
         if emergency:
             throttle, brake, mode = 0.0, max(brake, 0.75), 0
         if saving:

@@ -1,0 +1,53 @@
+{
+  "admission": "passed",
+  "bundle_sha256": "163ae28f38abc955cf2989673a29d6e3c19b4261d1bf9d8bcb1e13199424a606",
+  "created_at": "2026-11-16T02:06:30.693546+00:00",
+  "fault_code": null,
+  "files": {
+    "agent.py": {
+      "bytes": 26985,
+      "sha256": "f5898701e3ad2f90389e4e88c6d985c07e76446cdc28ced30359aa4e08ca2c25"
+    },
+    "design.json": {
+      "bytes": 1055,
+      "sha256": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "track_crossover.py": {
+      "bytes": 146027,
+      "sha256": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5"
+    },
+    "track_data.py": {
+      "bytes": 3234,
+      "sha256": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7"
+    },
+    "track_highland.py": {
+      "bytes": 174479,
+      "sha256": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33"
+    },
+    "track_parkland.py": {
+      "bytes": 142262,
+      "sha256": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c"
+    }
+  },
+  "id": "9d2be079-8439-4093-92ba-7b52b72d4617",
+  "number": 6,
+  "version_id": "12a43477-0bd8-4fbc-9d1b-76040be7376a",
+  "platform": "AGX",
+  "competition_id": "1eb91364-950b-5725-aa4b-3501b16860ec",
+  "candidate_version": "v6",
+  "fuel_load_kg": 8,
+  "all_uploaded_file_hashes_match": true,
+  "current_registration_version": 5,
+  "current_registration_fingerprint": "392956f71b74",
+  "new_official_race_result": null,
+  "last_checked_at": "2026-11-16T02:26:27.284870+00:00",
+  "status_note": "Bundle API now confirms admission passed and published version 6. Current registration selection was not rechecked; the latest damage race public replay uses the old 15 kg design, not this 8 kg bundle.",
+  "previous_check": {
+    "last_checked_at": "2026-11-16T02:14:27+00:00",
+    "admission": "queued",
+    "current_registration_version": 5,
+    "current_registration_fingerprint": "392956f71b74",
+    "status_note": "At 10:14 Beijing, racing bundle remains queued about eight minutes after upload; no published version ID or validation failure. Competition is open and scheduling_error is null; the cause of admission delay is not exposed."
+  },
+  "current_registration_last_checked_at": "2026-11-16T02:14:27+00:00"
+}

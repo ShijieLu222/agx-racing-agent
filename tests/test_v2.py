@@ -151,6 +151,8 @@ class WetControlRegressionTests(unittest.TestCase):
 
     def test_boost_does_not_chatter_around_its_entry_threshold(self):
         row = observation(speed=39.0)
+        # v6 additionally requires force demand beyond the lower power tiers.
+        row['self']['drive_force_n'] = [1000, 2000, 2500, 3000]
         modes = []
         with patch.object(agent.Driver, 'speed_plan', return_value=40.0):
             for error in (1.0, 1.6, 1.4, 1.6, 1.4, .4):
@@ -167,7 +169,8 @@ class WetControlRegressionTests(unittest.TestCase):
                 row['self'].update(speed_mps=40.0-error, vx=40.0-error)
                 actions.append(agent.act(row))
                 row = advance(row)
-        self.assertEqual(actions[0]['ers_mode'], 3)
+        # Neutral already covers this small acceleration demand in v6.
+        self.assertEqual(actions[0]['ers_mode'], 1)
         for action in actions[1:3]:
             self.assertEqual(action['throttle'], 0.0)
             self.assertGreater(action['brake'], 0.0)

@@ -1,0 +1,472 @@
+{
+  "format": "agx-fuel-audit.v1",
+  "matches": [
+    {
+      "match_id": "34c9fa84-5a6b-419c-8543-2f98a13a0feb",
+      "finished_at_beijing": "2026-11-15 12:05",
+      "track": "crossover",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 8,
+          "name": "0o0",
+          "is_own": false,
+          "position": 1,
+          "laps": 3,
+          "status": "running",
+          "starting_fuel_kg": 60.0,
+          "ending_fuel_kg": 56.4305,
+          "race_fuel_used_kg": 3.5695,
+          "complete_four_laps": false
+        },
+        {
+          "seat": 0,
+          "name": "xx ll",
+          "is_own": false,
+          "position": 2,
+          "laps": 3,
+          "status": "retired",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 10.0302,
+          "race_fuel_used_kg": 1.9698,
+          "complete_four_laps": false
+        },
+        {
+          "seat": 4,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 3,
+          "laps": 2,
+          "status": "running",
+          "starting_fuel_kg": 60.0,
+          "ending_fuel_kg": 58.6059,
+          "race_fuel_used_kg": 1.3941,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "3a05ac7704448c39360112c60183426072721a6903b27de0f877bc1f389bfded",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 74869,
+          "sha256": "31047336539148e00e59b95081d25bbef9a4d701c5499ec37710b427950f6cde"
+        },
+        "terminal_chunk_index": 237,
+        "terminal_chunk_sha256": "674fbea454c111e226638faa3667c6c5652027d911a033ebebf28891d85ffdbf",
+        "terminal_tick": 78758
+      }
+    },
+    {
+      "match_id": "ebdcf3a9-f561-4918-a56e-3641b662eda4",
+      "finished_at_beijing": "2026-11-15 14:22",
+      "track": "crossover",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 0,
+          "name": "羊宫妃那",
+          "is_own": false,
+          "position": 1,
+          "laps": 3,
+          "status": "running",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 13.0112,
+          "race_fuel_used_kg": 1.9888,
+          "complete_four_laps": false
+        },
+        {
+          "seat": 1,
+          "name": "豆包拉的",
+          "is_own": false,
+          "position": 2,
+          "laps": 2,
+          "status": "running",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 10.6881,
+          "race_fuel_used_kg": 1.3119,
+          "complete_four_laps": false
+        },
+        {
+          "seat": 8,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 9,
+          "laps": 1,
+          "status": "unclassified",
+          "starting_fuel_kg": 60.0,
+          "ending_fuel_kg": 58.7771,
+          "race_fuel_used_kg": 1.2229,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "3228bb227e90203b3f8189b352e0757c613f5efb703d27c8e8711738e929e687",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 74817,
+          "sha256": "133a9634d7dcab6a7ab31d1a702f449a82a8566815ebe88e3368cacee113386e"
+        },
+        "terminal_chunk_index": 450,
+        "terminal_chunk_sha256": "f19217f233f87a0ade49300d9177c75480457810f8f94e2a93151e91077f93b1",
+        "terminal_tick": 148880
+      }
+    },
+    {
+      "match_id": "a0aaa974-aed5-4991-a793-6c3ea50a6257",
+      "finished_at_beijing": "2026-11-15 16:10",
+      "track": "crossover",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 9,
+          "name": "Takina",
+          "is_own": false,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 11.3254,
+          "race_fuel_used_kg": 3.6746,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 2,
+          "name": "aiyameishi",
+          "is_own": false,
+          "position": 2,
+          "laps": 3,
+          "status": "running",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 8.5231,
+          "race_fuel_used_kg": 3.4769,
+          "complete_four_laps": false
+        },
+        {
+          "seat": 6,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 4,
+          "laps": 3,
+          "status": "running",
+          "starting_fuel_kg": 60.0,
+          "ending_fuel_kg": 57.8176,
+          "race_fuel_used_kg": 2.1824,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "175273003e6dc270857118017e23bf85c250f0afeb921474bcc1a49c58b54583",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 74971,
+          "sha256": "f26f352681062a34d0c77f2db8f896d0d4fcde588e784d1c0f8d988f9fc958b9"
+        },
+        "terminal_chunk_index": 395,
+        "terminal_chunk_sha256": "d61fbe048b48d78a0aa5521270656b314d4646936a173f60c23fd7c65f39bc7e",
+        "terminal_tick": 130876
+      }
+    },
+    {
+      "match_id": "62748d6a-01f8-4841-9b89-840e506b50bf",
+      "finished_at_beijing": "2026-11-15 20:11",
+      "track": "parkland",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 0,
+          "name": "zzp",
+          "is_own": false,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 7.1488,
+          "race_fuel_used_kg": 4.8512,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 2,
+          "name": "C",
+          "is_own": false,
+          "position": 2,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 11.0,
+          "ending_fuel_kg": 6.9667,
+          "race_fuel_used_kg": 4.0333,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 3,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 6,
+          "laps": 3,
+          "status": "finished",
+          "starting_fuel_kg": 22.0,
+          "ending_fuel_kg": 20.4034,
+          "race_fuel_used_kg": 1.5966,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "ff37d1184dfbc3d3d0ab6906563dc0a0e34749d3acdd1d3b6d0b1d8b1d492d34",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 65984,
+          "sha256": "921f3e38507e61e1a13751567d5ade7884bd384aa371b00c268ab1c4373cf6e2"
+        },
+        "terminal_chunk_index": 342,
+        "terminal_chunk_sha256": "ab2e12cb3eb52a7c5a9eb184ac3e0375f6d3501c9f9edba061a812cce5d3b9ad",
+        "terminal_tick": 112641
+      }
+    },
+    {
+      "match_id": "729007cb-2076-41c1-bb88-b2af54e16b66",
+      "finished_at_beijing": "2026-11-15 22:11",
+      "track": "parkland",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 8,
+          "name": "可爱の冯斌",
+          "is_own": false,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 6.8777,
+          "race_fuel_used_kg": 5.1223,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 7,
+          "name": "全球赛车水平下降千倍而我保持不变",
+          "is_own": false,
+          "position": 2,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 7.0,
+          "ending_fuel_kg": 2.1231,
+          "race_fuel_used_kg": 4.8769,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 0,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 9,
+          "laps": 3,
+          "status": "finished",
+          "starting_fuel_kg": 22.0,
+          "ending_fuel_kg": 20.2881,
+          "race_fuel_used_kg": 1.7119,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "bee1498762e22221d254d09735bfdbb6afb3174438f2f82adb32da8de0a0a5e5",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 65982,
+          "sha256": "df1e2f0420111f98e2aff62f14a30703dde7ea58e9754739faffe2ad0892e832"
+        },
+        "terminal_chunk_index": 337,
+        "terminal_chunk_sha256": "cb048474726bd8b435f931d8b9058f9a15e568ac0f73820419d828f89b95461e",
+        "terminal_tick": 111000
+      }
+    },
+    {
+      "match_id": "f874416b-529d-4553-9e20-4347aeb899c9",
+      "finished_at_beijing": "2026-11-16 00:34",
+      "track": "parkland",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 9,
+          "name": "Blueharbour",
+          "is_own": false,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 7.0,
+          "ending_fuel_kg": 2.1593,
+          "race_fuel_used_kg": 4.8407,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 0,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 2,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 10.3138,
+          "race_fuel_used_kg": 4.6862,
+          "complete_four_laps": true
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "2e39effe3af330d8791ec1209bb91b5d6e606653328eb39ace90758fccd34743",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 66040,
+          "sha256": "d40dfe51f46ff0c0bcb57afa0db66099f78d56729dad112393cacbb4a3501f6e"
+        },
+        "terminal_chunk_index": 357,
+        "terminal_chunk_sha256": "c943994746bdcd911724686accf52c9edc9bdabed0b83a3d675a90d0efd16c16",
+        "terminal_tick": 117570
+      }
+    },
+    {
+      "match_id": "5f149fca-4e4e-4739-90e4-40316e602c22",
+      "finished_at_beijing": "2026-11-16 02:29",
+      "track": "highland",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 0,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 9.5168,
+          "race_fuel_used_kg": 5.4832,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 3,
+          "name": "aiyameishi",
+          "is_own": false,
+          "position": 2,
+          "laps": 3,
+          "status": "finished",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 9.6335,
+          "race_fuel_used_kg": 2.3665,
+          "complete_four_laps": false
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "f2191b4fd9dd0712dcef14358611cd75c411b8c3164ae85baee99063d1032343",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 63839,
+          "sha256": "1425fe92f7c8ade68cdb4c9308aa06b6ac49730f54675d67d6a9db3703c50768"
+        },
+        "terminal_chunk_index": 492,
+        "terminal_chunk_sha256": "235654df40d2d645921462ed18980525013f6a4132df99539637588c2d9ac5c8",
+        "terminal_tick": 162099
+      }
+    },
+    {
+      "match_id": "e8ecf680-e00a-44ac-857a-715ba711c1c8",
+      "finished_at_beijing": "2026-11-16 04:19",
+      "track": "crossover",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 2,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 10.2598,
+          "race_fuel_used_kg": 4.7402,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 6,
+          "name": "Blueharbour",
+          "is_own": false,
+          "position": 2,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 7.5,
+          "ending_fuel_kg": 3.552,
+          "race_fuel_used_kg": 3.948,
+          "complete_four_laps": true
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "1f360e829bf22d8b56e09d182bb9069aea0342b74a7e010405c0441b8a534a7f",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 74964,
+          "sha256": "0dd7eb4bcb6dafeab737d5395614ca444173f40a552dbd3509126b899cc433c4"
+        },
+        "terminal_chunk_index": 403,
+        "terminal_chunk_sha256": "ff70bba21c3f3cd478c246988217a7cf6887f1cc583af977d2bd1fe7c6cc2025",
+        "terminal_tick": 133625
+      }
+    },
+    {
+      "match_id": "1c24ba1b-bb26-469d-bbc4-3c6ee7feef79",
+      "finished_at_beijing": "2026-11-16 06:24",
+      "track": "parkland",
+      "race_laps": 4,
+      "classification": [
+        {
+          "seat": 1,
+          "name": "zzp",
+          "is_own": false,
+          "position": 1,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 12.0,
+          "ending_fuel_kg": 7.2244,
+          "race_fuel_used_kg": 4.7756,
+          "complete_four_laps": true
+        },
+        {
+          "seat": 9,
+          "name": "zkdw66",
+          "is_own": true,
+          "position": 2,
+          "laps": 4,
+          "status": "finished",
+          "starting_fuel_kg": 15.0,
+          "ending_fuel_kg": 9.7373,
+          "race_fuel_used_kg": 5.2627,
+          "complete_four_laps": true
+        }
+      ],
+      "sources": {
+        "descriptor_sha256": "34e025fc6ed9566e2b639e869e1685118f24dcd5f3560049f1245ec3e275ddc0",
+        "public_static": {
+          "chunks": 1,
+          "rows": 2,
+          "raw_bytes": 65976,
+          "sha256": "66f0a53df3e08c21929822217d6773f7a86b6eda3a08e9484eb1f1c874da072c"
+        },
+        "terminal_chunk_index": 335,
+        "terminal_chunk_sha256": "f00eae71a71df78d64aa88d0243905afdbb4fa72f05a3c277fe43933bf1bf58f",
+        "terminal_tick": 110232
+      }
+    }
+  ],
+  "complete_four_lap_top_two": {
+    "count": 12,
+    "min_kg": 3.6746,
+    "mean_kg": 4.6912416666666665,
+    "median_kg": 4.8081499999999995,
+    "max_kg": 5.4832
+  },
+  "method": "Race consumption = sealed design fuel_load_kg - verified terminal public frame fuel_kg. Official rule recreates the car from selected design at race start, resetting qualifying fuel use. Starting fuel is metadata-derived, not independently read from race-start frames for every match. No refuelling. Non-finishers and fewer-than-four-lap results excluded from full-distance aggregate. No whole-frame-stream hash claim: only metadata and terminal chunk audited.",
+  "recommended_initial_kg": 8,
+  "margin_over_observed_max_kg": 2.5168,
+  "limitations": "Nine matches, three tracks, multiple strategies and weather conditions; v6 changes energy allocation and may change fuel use. Historical maximum is not a guaranteed upper bound."
+}

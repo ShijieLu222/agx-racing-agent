@@ -1,0 +1,278 @@
+[
+  {
+    "match_id": "1c24ba1b-bb26-469d-bbc4-3c6ee7feef79",
+    "finished_at": "2026-11-15T22:24:02.323259+00:00",
+    "track": "parkland",
+    "own": {
+      "seat": 9,
+      "position": 2,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 481.605,
+      "gap_to_winner_s": 13.644,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 117.082,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 4
+        }
+      ],
+      "qualifying_position": 6,
+      "display_points": 18
+    },
+    "winner": {
+      "seat": 1,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 467.961,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 107.399,
+        "lap": 1
+      },
+      "pit_stops": 0,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 4
+        }
+      ],
+      "qualifying_position": 1,
+      "display_points": 25
+    },
+    "winner_name": "zzp",
+    "verified_streams": {
+      "public_static": {
+        "chunks": 1,
+        "rows": 2,
+        "raw_bytes": 65976,
+        "sha256": "66f0a53df3e08c21929822217d6773f7a86b6eda3a08e9484eb1f1c874da072c"
+      },
+      "public_events": {
+        "chunks": 5,
+        "rows": 18502,
+        "raw_bytes": 4353642,
+        "sha256": "7e246573616184d749ed77ceeb433284cd8ae5f64090f0d4fac34842b5b27ae1"
+      }
+    },
+    "descriptor_sha256": "34e025fc6ed9566e2b639e869e1685118f24dcd5f3560049f1245ec3e275ddc0"
+  },
+  {
+    "match_id": "e8ecf680-e00a-44ac-857a-715ba711c1c8",
+    "finished_at": "2026-11-15T20:19:15.469625+00:00",
+    "track": "crossover",
+    "own": {
+      "seat": 2,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 515.388,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 119.303,
+        "lap": 1
+      },
+      "pit_stops": 1,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 2
+        },
+        {
+          "compound": "medium",
+          "laps": 2
+        }
+      ],
+      "qualifying_position": 2,
+      "display_points": 25
+    },
+    "winner": {
+      "seat": 2,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 515.388,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 119.303,
+        "lap": 1
+      },
+      "pit_stops": 1,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 2
+        },
+        {
+          "compound": "medium",
+          "laps": 2
+        }
+      ],
+      "qualifying_position": 2,
+      "display_points": 25
+    },
+    "winner_name": "zkdw66",
+    "verified_streams": {
+      "public_static": {
+        "chunks": 1,
+        "rows": 2,
+        "raw_bytes": 74964,
+        "sha256": "0dd7eb4bcb6dafeab737d5395614ca444173f40a552dbd3509126b899cc433c4"
+      },
+      "public_events": {
+        "chunks": 2,
+        "rows": 8665,
+        "raw_bytes": 2026232,
+        "sha256": "98af222e0020c1911296d393ccd1e27faa6bb515a6654a77b91e5f7b11a5bf77"
+      }
+    },
+    "descriptor_sha256": "1f360e829bf22d8b56e09d182bb9069aea0342b74a7e010405c0441b8a534a7f"
+  },
+  {
+    "match_id": "5f149fca-4e4e-4739-90e4-40316e602c22",
+    "finished_at": "2026-11-15T18:29:04.265725+00:00",
+    "track": "highland",
+    "own": {
+      "seat": 0,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 667.094,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 158.03,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 4
+        }
+      ],
+      "qualifying_position": 1,
+      "display_points": 25
+    },
+    "winner": {
+      "seat": 0,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 667.094,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 158.03,
+        "lap": 2
+      },
+      "pit_stops": 0,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 4
+        }
+      ],
+      "qualifying_position": 1,
+      "display_points": 25
+    },
+    "winner_name": "zkdw66",
+    "verified_streams": {
+      "public_static": {
+        "chunks": 1,
+        "rows": 2,
+        "raw_bytes": 63839,
+        "sha256": "1425fe92f7c8ade68cdb4c9308aa06b6ac49730f54675d67d6a9db3703c50768"
+      },
+      "public_events": {
+        "chunks": 3,
+        "rows": 11653,
+        "raw_bytes": 2729093,
+        "sha256": "0d61ce89c6d497bc1d85bc347018856995982a6bbf7997d90a78a9c4d9052e9b"
+      }
+    },
+    "descriptor_sha256": "f2191b4fd9dd0712dcef14358611cd75c411b8c3164ae85baee99063d1032343"
+  },
+  {
+    "match_id": "f874416b-529d-4553-9e20-4347aeb899c9",
+    "finished_at": "2026-11-15T16:34:50.394402+00:00",
+    "track": "parkland",
+    "own": {
+      "seat": 0,
+      "position": 2,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 479.509,
+      "gap_to_winner_s": 0.052,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 105.399,
+        "lap": 2
+      },
+      "pit_stops": 1,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 2
+        },
+        {
+          "compound": "medium",
+          "laps": 2
+        }
+      ],
+      "qualifying_position": 5,
+      "display_points": 18
+    },
+    "winner": {
+      "seat": 9,
+      "position": 1,
+      "status": "finished",
+      "laps": 4,
+      "total_time_s": 479.457,
+      "gap_to_winner_s": 0.0,
+      "laps_behind": 0,
+      "fastest_lap": {
+        "time_s": 95.763,
+        "lap": 1
+      },
+      "pit_stops": 1,
+      "tyre_stints": [
+        {
+          "compound": "soft",
+          "laps": 2
+        },
+        {
+          "compound": "medium",
+          "laps": 2
+        }
+      ],
+      "qualifying_position": 1,
+      "display_points": 25
+    },
+    "winner_name": "Blueharbour",
+    "verified_streams": {
+      "public_static": {
+        "chunks": 1,
+        "rows": 2,
+        "raw_bytes": 66040,
+        "sha256": "d40dfe51f46ff0c0bcb57afa0db66099f78d56729dad112393cacbb4a3501f6e"
+      },
+      "public_events": {
+        "chunks": 3,
+        "rows": 9084,
+        "raw_bytes": 2212307,
+        "sha256": "148484c97499fba8cd839640f3c1f4e9050832c12a01edd285eb58d82de43c1a"
+      }
+    },
+    "descriptor_sha256": "2e39effe3af330d8791ec1209bb91b5d6e606653328eb39ace90758fccd34743"
+  }
+]

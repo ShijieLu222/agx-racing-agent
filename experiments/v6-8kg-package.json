@@ -1,0 +1,27 @@
+{
+  "candidate_version": "v6",
+  "fuel_load_kg": 8,
+  "previous_fuel_load_kg": 15,
+  "bundle_sha256": "163ae28f38abc955cf2989673a29d6e3c19b4261d1bf9d8bcb1e13199424a606",
+  "bundle_bytes": 165715,
+  "source_sha256": {
+    "agent.py": "f5898701e3ad2f90389e4e88c6d985c07e76446cdc28ced30359aa4e08ca2c25",
+    "track_data.py": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7",
+    "track_parkland.py": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c",
+    "track_highland.py": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33",
+    "track_crossover.py": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5",
+    "design.json": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+  },
+  "validation": {
+    "design_all_three_tracks": "passed",
+    "design_map_pack_tests": 14,
+    "zip_matches_workspace": true
+  },
+  "uploaded": true,
+  "benchmark_note": "benchmark-v6.json records the prior 15 kg design snapshot. Driving source is unchanged; only design fuel changed. No new performance claim.",
+  "platform_submission_id": "9d2be079-8439-4093-92ba-7b52b72d4617",
+  "platform_admission": "passed",
+  "platform_version_number": 6,
+  "platform_version_id": "12a43477-0bd8-4fbc-9d1b-76040be7376a",
+  "platform_checked_at": "2026-11-16T02:26:27.284870+00:00"
+}
