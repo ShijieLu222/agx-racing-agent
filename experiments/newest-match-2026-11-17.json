@@ -1,0 +1,104 @@
+{
+  "id": "88998e7d-e746-4ae0-8f11-a6c39e941e91",
+  "game_id": "racing",
+  "competition_id": "1eb91364-950b-5725-aa4b-3501b16860ec",
+  "mode": "ranked",
+  "status": "succeeded",
+  "trigger": "auto",
+  "rated": true,
+  "test_period": false,
+  "runtime_id": "python-agent-v1",
+  "is_canary": false,
+  "participants": [
+    {
+      "seat": 0,
+      "team": 0,
+      "role": 0,
+      "display_name": "Johnson9",
+      "is_mine": false
+    },
+    {
+      "seat": 1,
+      "team": 1,
+      "role": 0,
+      "display_name": "羊宫妃那",
+      "is_mine": false
+    },
+    {
+      "seat": 2,
+      "team": 2,
+      "role": 0,
+      "display_name": "King",
+      "is_mine": false
+    },
+    {
+      "seat": 3,
+      "team": 3,
+      "role": 0,
+      "display_name": "Verstappen",
+      "is_mine": false
+    },
+    {
+      "seat": 4,
+      "team": 4,
+      "role": 0,
+      "display_name": "Blueharbour",
+      "is_mine": false
+    },
+    {
+      "seat": 5,
+      "team": 5,
+      "role": 0,
+      "display_name": "世杰nb66",
+      "is_mine": false
+    },
+    {
+      "seat": 6,
+      "team": 6,
+      "role": 0,
+      "display_name": "Deep♂Dark♂Fantasy♂",
+      "is_mine": false
+    },
+    {
+      "seat": 7,
+      "team": 7,
+      "role": 0,
+      "display_name": "zkdw66",
+      "is_mine": true
+    },
+    {
+      "seat": 8,
+      "team": 8,
+      "role": 0,
+      "display_name": "Kei",
+      "is_mine": false
+    },
+    {
+      "seat": 9,
+      "team": 9,
+      "role": 0,
+      "display_name": "Jaguar Racing",
+      "is_mine": false
+    }
+  ],
+  "replay_state": "available",
+  "replay_availability": "available",
+  "created_at": "2026-11-17T02:27:20.085360+00:00",
+  "started_at": null,
+  "finished_at": "2026-11-17T02:35:56.512545+00:00",
+  "error": null,
+  "result": {
+    "ranks": [
+      0,
+      2,
+      5,
+      4,
+      6,
+      7,
+      8,
+      1,
+      3,
+      9
+    ]
+  }
+}

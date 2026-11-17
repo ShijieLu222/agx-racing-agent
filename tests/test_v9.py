@@ -64,12 +64,12 @@ class FuelTests(unittest.TestCase):
 
 
 class GripAndPassingTests(unittest.TestCase):
-    def test_warm_bonus_fades_before_cold_or_wet_conditions(self):
+    def test_max_warm_bonus_and_wet_baseline_are_preserved(self):
         warm = observation()
         cool = copy.deepcopy(warm)
         cool['self']['tyre_temp_c'] = [65]*4
         self.assertAlmostEqual(agent.tyre_mu(warm), 1.75*1.28)
-        self.assertAlmostEqual(agent.tyre_mu(cool), 1.75*.94)
+        self.assertAlmostEqual(agent.tyre_mu(cool), 1.75*.94*1.196)
         warm['weather']['track_wetness'] = .3
         self.assertAlmostEqual(agent.tyre_mu(warm), 1.75*.91)
 

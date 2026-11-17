@@ -1,4 +1,4 @@
-"""AGX Formula Racing v9: warm-dry pace and mature fuel-demand estimation.
+"""AGX Formula Racing v10 candidate: cool-dry pace and aero-aware braking.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -56,9 +56,13 @@ def tyre_mu(observation):
     hot = max(0.0, maximum(car.get("tyre_temp_c"), 85) - 118)
     temps = [number(t, 80) for t in (car.get("tyre_temp_c") or [80])]
     cold_factor = max(0.80, 1 - 0.004 * max(0.0, 80 - min(temps)))
-    # Bounded recalibration from the dry Crossover comparison. Preserve v8's
-    # cold-tyre and wet-road estimate; the bonus fades rather than switching.
-    warm_dry = (1 + .28 * clip((min(temps) - 65) / 15, 0, 1)
+    # Parkland's dry race spent most of the lap below 65 C, disabling v9's
+    # entire calibration. Keep the temperature penalty, but ramp a modest
+    # dry correction from 40 C; the existing 28% maximum is unchanged.
+    # This is a bounded hypothesis, not measured friction or a lap-time claim.
+    dry_bonus = (.14 * clip((min(temps) - 40) / 15, 0, 1)
+                 + .14 * clip((min(temps) - 55) / 25, 0, 1))
+    warm_dry = (1 + dry_bonus
                 * clip(1 - wet / .30, 0, 1))
     allocation = (observation.get("tyres") or {}).get("allocation") or {}
     compound = car.get("compound")
@@ -246,8 +250,9 @@ class Driver:
             self.downforce_per_v2 = downforce / (speed * speed)
         aero_coefficient = self.downforce_per_v2
         # Available ground-level braking, bounded only by measured brake force.
-        braking = min(mu * 9.81,
-                      max(1.0, number(car.get("brake_force_max_n"), mass * 12)) / mass)
+        brake_limit = max(1.0, number(car.get("brake_force_max_n"), mass * 12)) / mass
+        braking = min(mu * 9.81, brake_limit)
+        dry_braking = clip(1 - number((observation.get("weather") or {}).get("track_wetness")) / .30, 0, 1)
         self.available_braking = braking
         weakest_grade = min([geometry[1]] + [row[2] for row in rows])
         horizon_braking = max(0.1, braking + 9.81 * weakest_grade)
@@ -275,7 +280,11 @@ class Driver:
         def segment_braking(v2, kappa):
             capacity = mu * (9.81 + aero_coefficient * v2 / mass)
             lateral = v2 * abs(kappa)
-            return min(braking, math.sqrt(max(0.0, capacity * capacity - lateral * lateral)))
+            # V9 discarded all aero-supported braking by capping at mu*g.
+            # Retain the mechanical brake limit and combined lateral demand.
+            # Wet conditions continuously return to the validated v9 ceiling.
+            ceiling = braking + dry_braking * (brake_limit - braking)
+            return min(ceiling, math.sqrt(max(0.0, capacity * capacity - lateral * lateral)))
         curve, grade, width_left, width_right = geometry
         target = corner_speed(curve)
         planning = [row for row in rows if row[0] <= horizon]
@@ -308,7 +317,14 @@ class Driver:
                 gap = max(0.0, next_distance - distance)
                 grade_accel = 9.81 * min(slope, next_grade)
                 trial_v2 = min(corner * corner, max(0.0, envelope * envelope + 2 * (braking + grade_accel) * gap))
-                decel = segment_braking(trial_v2, max(abs(kappa), abs(next_curve))) + grade_accel
+                # Downstream speed gives a conservative aero force over a
+                # decelerating segment. Keep v9's lateral-demand evaluation;
+                # use the smaller budget rather than assuming peak aero holds.
+                decel = segment_braking(trial_v2, max(abs(kappa), abs(next_curve)))
+                if dry_braking > 0:
+                    decel = min(decel, segment_braking(min(trial_v2, envelope * envelope),
+                                                       max(abs(kappa), abs(next_curve))))
+                decel += grade_accel
                 envelope = min(corner, math.sqrt(max(0.0, envelope * envelope
                                   + 2 * decel * gap)))
                 next_distance, next_grade, next_curve = distance, slope, kappa

@@ -1,0 +1,62 @@
+{
+  "baseline_ref": "e6c74b0102738fec53b1168f974645b97f9df106",
+  "calls": 9000,
+  "changed_actions": 0,
+  "segments": [
+    {
+      "track": "parkland",
+      "wet": 0.3,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "parkland",
+      "wet": 0.8,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "parkland",
+      "wet": 1,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "highland",
+      "wet": 0.3,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "highland",
+      "wet": 0.8,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "highland",
+      "wet": 1,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "crossover",
+      "wet": 0.3,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "crossover",
+      "wet": 0.8,
+      "calls": 1000,
+      "changed_actions": 0
+    },
+    {
+      "track": "crossover",
+      "wet": 1,
+      "calls": 1000,
+      "changed_actions": 0
+    }
+  ],
+  "limitation": "Synthetic fixed legal-shape inputs, not the unavailable newest race trace or physical weather transitions."
+}

@@ -1,0 +1,50 @@
+{
+  "id": "a556cdf3-feeb-4ae8-8faa-a8bf3ba6f117",
+  "agent_id": "2756a993-5961-40d7-85ac-c534bb4d6e9e",
+  "runtime_id": "python-agent-v1",
+  "bundle_sha256": "4e36a195502d1a1f71c0f906ce1930963aeb23ac6656f761b8ed1d1baea514fa",
+  "profile_digest": "9ac1e96a97aa638726da610004276167288e3dfdb22afc84ade6c35f8084d2fb",
+  "contract_id": "rsi-racing-4.4",
+  "game_id": "racing",
+  "rules_version": "rsi-racing-4.4",
+  "compressed_bytes": 168363,
+  "expanded_bytes": 502919,
+  "tensor_bytes": 0,
+  "files": {
+    "agent.py": {
+      "bytes": 35862,
+      "sha256": "ab4fb54787ce6d862a1f3d90e4ed4333114da7edc8303efc1e8326a00e41cc22"
+    },
+    "design.json": {
+      "bytes": 1055,
+      "sha256": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "track_data.py": {
+      "bytes": 3234,
+      "sha256": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7"
+    },
+    "track_highland.py": {
+      "bytes": 174479,
+      "sha256": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33"
+    },
+    "track_parkland.py": {
+      "bytes": 142262,
+      "sha256": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c"
+    },
+    "track_crossover.py": {
+      "bytes": 146027,
+      "sha256": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5"
+    }
+  },
+  "admission": "passed",
+  "fault_code": null,
+  "created_at": "2026-11-17T04:23:15.493987+00:00",
+  "version_id": "c720a7b8-7369-4a81-9d51-8b59bf831151",
+  "number": 10,
+  "platform": "AGX",
+  "fuel_load_kg": 8,
+  "all_uploaded_file_hashes_match": true,
+  "last_checked_at": "2026-11-17T04:29:31.779Z",
+  "new_official_race_result": null,
+  "my_competitions_display": "多人赛车 · 进行中 · v10 尚无计分结果"
+}

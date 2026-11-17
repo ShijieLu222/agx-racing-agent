@@ -25,7 +25,7 @@ DRAG_COEFFICIENT = 0.7
 ROLLING_FORCE_N = 100.0
 
 
-def run(track, speed_cap, seconds=400.0, body_sideslip=False):
+def run(track, speed_cap, seconds=400.0, body_sideslip=False, downforce_coefficient=0.0, tyre_temp=85.0):
     old_cap = agent.DRY_SPEED_CAP
     agent.DRY_SPEED_CAP = speed_cap
     length = track["length"]
@@ -51,7 +51,8 @@ def run(track, speed_cap, seconds=400.0, body_sideslip=False):
                     "heading_error": heading, "speed_mps": speed,
                     "vx": speed * math.cos(beta), "vy": speed * math.sin(beta), "yaw_rate": yaw_rate,
                     "steer": wheel_angle, "fuel_kg": 60, "pu_temp_c": 90,
-                    "tyre_wear": [0] * 4, "tyre_temp_c": [85] * 4,
+                    "tyre_wear": [0] * 4, "tyre_temp_c": [tyre_temp] * 4,
+                    "downforce_n": downforce_coefficient * speed * speed,
                     "ers_soc_mj": 3, "effective_mass_kg": MASS_KG,
                     "drag_n": DRAG_COEFFICIENT * speed * speed,
                     "rolling_resistance_n": ROLLING_FORCE_N,
@@ -105,17 +106,25 @@ def main():
                         default=[agent.DRY_SPEED_CAP])
     parser.add_argument("--body-sideslip", action='store_true',
                         help='Include normal kinematic body sideslip at a centered wheelbase; still no dynamic tyre model.')
+    parser.add_argument('--downforce-coefficient', type=float, default=0.0)
+    parser.add_argument('--tyre-temp', type=float, default=85.0)
     args = parser.parse_args()
     if any(v is not None and (not math.isfinite(v) or v <= 0) for v in args.compare):
         parser.error("speed caps must be finite positive values")
+    if not math.isfinite(args.downforce_coefficient) or args.downforce_coefficient<0 or not math.isfinite(args.tyre_temp):
+        parser.error('downforce coefficient must be finite/nonnegative and temperature finite')
     output = {
         "diagnostic_only": True,
         "limitation": "Invented force constants and unlimited-slip bicycle model; not race physics, qualifying, finish validation or performance evidence.",
         "assumptions": {"mass_kg": MASS_KG, "drive_force_n": DRIVE_FORCE_N,
                         "brake_force_n": BRAKE_FORCE_N,
                         "drag_coefficient": DRAG_COEFFICIENT,
-                        "rolling_force_n": ROLLING_FORCE_N},
-        "results": [run(track, cap, body_sideslip=args.body_sideslip) for cap in args.compare
+                        "rolling_force_n": ROLLING_FORCE_N,
+                        'downforce_coefficient': args.downforce_coefficient,
+                        'constant_tyre_temp_c': args.tyre_temp},
+        "results": [run(track, cap, body_sideslip=args.body_sideslip,
+                        downforce_coefficient=args.downforce_coefficient,
+                        tyre_temp=args.tyre_temp) for cap in args.compare
                     for track in track_data.TRACKS.values()],
     }
     print(json.dumps(output, indent=2, allow_nan=False))
