@@ -157,9 +157,9 @@ def main():
     if args.calls < 90:
         parser.error("at least 90 calls are needed for the nine scenario segments")
     base = json.loads((ROOT / "tests/fixtures/official_observation.json").read_text())
+    from pack import FILES
     source_hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                     for name in ("agent.py", "track_data.py", "track_parkland.py",
-                                  "track_highland.py", "track_crossover.py", "design.json")}
+                     for name in FILES}
     scenarios = [(track, wet) for track in TRACKS.values() for wet in (0.0, .3, .8)]
     timings, errors, summaries = [], [], []
     init_cpu_ns = 0

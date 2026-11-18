@@ -1,0 +1,1377 @@
+{
+  "races": [
+    {
+      "match_id": "b6287017-2152-4344-90b5-aa45aca1ad6c",
+      "finished_at": "2026-11-18T00:37:59.661734+00:00",
+      "version": 10,
+      "track": "parkland",
+      "own_seat": 0,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "Excarii",
+          "seat": 9,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 391.664,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 96.44,
+            "lap": 1
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 4
+            }
+          ],
+          "qualifying_position": 7,
+          "display_points": 25
+        },
+        {
+          "display_name": "John Wick",
+          "seat": 8,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 407.403,
+          "gap_to_winner_s": 15.739,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 97.359,
+            "lap": 1
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 4
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 0,
+          "position": 6,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 482.301,
+          "gap_to_winner_s": 90.637,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 114.58,
+            "lap": 1
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 4
+            }
+          ],
+          "qualifying_position": 9,
+          "display_points": 8
+        }
+      ],
+      "own_incidents": [],
+      "official_stream_hashes": {
+        "public_events": "80c83550edc45ac642d57195cab707d08b90411aef385d527623204a077bc116",
+        "public_static": "91979090f7c57a8d002ee4b39c4d3352bcff3d8028aa98d9dc17ac9b7ac44201"
+      }
+    },
+    {
+      "match_id": "7d7b29ee-ace1-40c0-ac33-69ba4d51dff8",
+      "finished_at": "2026-11-17T22:37:10.629026+00:00",
+      "version": 10,
+      "track": "crossover",
+      "own_seat": 3,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "reverse_learning",
+          "seat": 5,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 549.051,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 130.846,
+            "lap": 2
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 4
+            }
+          ],
+          "qualifying_position": 4,
+          "display_points": 25
+        },
+        {
+          "display_name": "☀ 🐂",
+          "seat": 7,
+          "position": 2,
+          "status": "finished",
+          "laps": 3,
+          "total_time_s": 549.356,
+          "gap_to_winner_s": null,
+          "laps_behind": 1,
+          "fastest_lap": {
+            "time_s": 173.233,
+            "lap": 1
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            }
+          ],
+          "qualifying_position": 9,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 3,
+          "position": 8,
+          "status": "unclassified",
+          "laps": 2,
+          "total_time_s": 412.9,
+          "gap_to_winner_s": null,
+          "laps_behind": 2,
+          "fastest_lap": {
+            "time_s": 153.287,
+            "lap": 2
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 6,
+          "display_points": 0
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 63.2,
+          "kind": "incident",
+          "seats": [
+            3,
+            9
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 2095.753821395895
+          }
+        },
+        {
+          "seconds": 69.583,
+          "kind": "incident",
+          "seats": [
+            3,
+            9
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 2251.2649585547156
+          }
+        },
+        {
+          "seconds": 130.4,
+          "kind": "incident",
+          "seats": [
+            3,
+            0
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4748.576805067145
+          }
+        },
+        {
+          "seconds": 412.9,
+          "kind": "retired",
+          "seats": [
+            3
+          ],
+          "payload": {
+            "reason": "damage",
+            "lap": 2
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "e21b72f5b6f90497c5ff1e2d3600e16277386d32a016dcca2f681db6315439da",
+        "public_static": "e1dd08f7f33cfc3427b0de54b31e59fa04206c25771f0dd19900e60c0b539db4"
+      }
+    },
+    {
+      "match_id": "05ba91c5-eae7-492b-ba78-83e07d6b8f33",
+      "finished_at": "2026-11-17T20:35:57.014535+00:00",
+      "version": 10,
+      "track": "highland",
+      "own_seat": 5,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "Excarii",
+          "seat": 9,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 506.255,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 120.662,
+            "lap": 1
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 25
+        },
+        {
+          "display_name": "reverse_learning",
+          "seat": 0,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 526.794,
+          "gap_to_winner_s": 20.539,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 125.199,
+            "lap": 2
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            },
+            {
+              "compound": "medium",
+              "laps": 1
+            }
+          ],
+          "qualifying_position": 2,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 5,
+          "position": 4,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 564.427,
+          "gap_to_winner_s": 58.172,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 131.986,
+            "lap": 1
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 10,
+          "display_points": 12
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 15.183,
+          "kind": "incident",
+          "seats": [
+            5,
+            4
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 243.7154801017917
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "bd061bf1561ecc533efc0c805df728845dd6a8fcdd7c74b116880f9d258171ac",
+        "public_static": "338d678a4e8b6d40433acf7c2738e149d4e2254fafc06fcda53dca1348159d97"
+      }
+    },
+    {
+      "match_id": "d9c6414e-d11e-4e7e-b124-ef8d7a8df8c9",
+      "finished_at": "2026-11-17T18:34:39.019241+00:00",
+      "version": 10,
+      "track": "highland",
+      "own_seat": 4,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "江南曾听雨杨枝今何在",
+          "seat": 2,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 490.444,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 115.636,
+            "lap": 4
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 25
+        },
+        {
+          "display_name": "reverse_learning",
+          "seat": 3,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 525.694,
+          "gap_to_winner_s": 35.25,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 124.975,
+            "lap": 2
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            },
+            {
+              "compound": "medium",
+              "laps": 1
+            }
+          ],
+          "qualifying_position": 2,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 4,
+          "position": 3,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 583.74,
+          "gap_to_winner_s": 93.296,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 143.413,
+            "lap": 3
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 5,
+          "display_points": 15
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 166.333,
+          "kind": "incident",
+          "seats": [
+            4,
+            6
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 867.4551176129271
+          }
+        },
+        {
+          "seconds": 424.733,
+          "kind": "incident",
+          "seats": [
+            4,
+            6
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 6562.972428397627
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "8f7922b5445a074602a7e95964952b807f297325a9d12d3e12758fd392b5c0f8",
+        "public_static": "b215608726fd2885b70757c084ab07b7391970d81aa432546decc55826acd0bd"
+      }
+    },
+    {
+      "match_id": "7586385f-80e4-4606-acbb-f37b1a53fe68",
+      "finished_at": "2026-11-17T16:37:15.494944+00:00",
+      "version": 10,
+      "track": "highland",
+      "own_seat": 6,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "zkdw66",
+          "seat": 6,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 560.32,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 134.558,
+            "lap": 1
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 7,
+          "display_points": 25
+        },
+        {
+          "display_name": "你有全面封锁我有平地起惊雷",
+          "seat": 2,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 569.241,
+          "gap_to_winner_s": 8.921,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 138.15,
+            "lap": 4
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 9,
+          "display_points": 18
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 15.217,
+          "kind": "incident",
+          "seats": [
+            6,
+            8
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 240.359181108489
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "75a446375eaae05da498272373c928a41f140332e44f6351a07e5484d3db47c2",
+        "public_static": "0fb733813269a5bcbb6bab579a3180c04c0245a126dfd590483827ba1ca153f7"
+      }
+    },
+    {
+      "match_id": "70b00f36-4a2d-4445-81ee-654a8c0ae172",
+      "finished_at": "2026-11-17T14:39:00.630170+00:00",
+      "version": 10,
+      "track": "crossover",
+      "own_seat": 9,
+      "race_end": "absolute_time_limit",
+      "drivers": [
+        {
+          "display_name": "☀ 🐂",
+          "seat": 3,
+          "position": 1,
+          "status": "running",
+          "laps": 3,
+          "total_time_s": 663.4,
+          "gap_to_winner_s": null,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 169.894,
+            "lap": 2
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            }
+          ],
+          "qualifying_position": 5,
+          "display_points": 25
+        },
+        {
+          "display_name": "King",
+          "seat": 0,
+          "position": 2,
+          "status": "running",
+          "laps": 3,
+          "total_time_s": 663.4,
+          "gap_to_winner_s": null,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 196.456,
+            "lap": 2
+          },
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 9,
+          "position": 10,
+          "status": "unclassified",
+          "laps": 0,
+          "total_time_s": 663.4,
+          "gap_to_winner_s": null,
+          "laps_behind": 3,
+          "fastest_lap": null,
+          "pit_stops": 0,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 0
+            }
+          ],
+          "qualifying_position": 7,
+          "display_points": 0
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 16.617,
+          "kind": "incident",
+          "seats": [
+            9,
+            7
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 526.6587577508745
+          }
+        },
+        {
+          "seconds": 111.6,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 3649.057248969839
+          }
+        },
+        {
+          "seconds": 254.317,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4034.2322961683194
+          }
+        },
+        {
+          "seconds": 261.683,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4056.723369144443
+          }
+        },
+        {
+          "seconds": 301.25,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4169.292375610942
+          }
+        },
+        {
+          "seconds": 437.1,
+          "kind": "incident",
+          "seats": [
+            8,
+            9
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4557.520460626403
+          }
+        },
+        {
+          "seconds": 496.483,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 4723.237432338021
+          }
+        },
+        {
+          "seconds": 619.35,
+          "kind": "incident",
+          "seats": [
+            9,
+            1
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 5080.951335631987
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "93a77d5f5443a8e7a710dadc402406eb588add43e370bb06dbc042d63ab5a43d",
+        "public_static": "d931db79d29252d2777aa700325cd80606ad0a7674a794c7fd70728856cce683"
+      }
+    },
+    {
+      "match_id": "858a542a-df0e-44fa-8c47-7d3e772cec94",
+      "finished_at": "2026-11-17T12:38:06.132134+00:00",
+      "version": 10,
+      "track": "crossover",
+      "own_seat": 4,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "reverse_learning",
+          "seat": 3,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 476.271,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 104.501,
+            "lap": 2
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            },
+            {
+              "compound": "medium",
+              "laps": 1
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 25
+        },
+        {
+          "display_name": "Excarii",
+          "seat": 5,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 483.499,
+          "gap_to_winner_s": 7.228,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 112.629,
+            "lap": 4
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 3,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 4,
+          "position": 5,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 536.152,
+          "gap_to_winner_s": 59.881,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 123.777,
+            "lap": 4
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 6,
+          "display_points": 10
+        }
+      ],
+      "own_incidents": [
+        {
+          "seconds": 14.8,
+          "kind": "incident",
+          "seats": [
+            4,
+            9
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 524.0287522070023
+          }
+        },
+        {
+          "seconds": 56.3,
+          "kind": "incident",
+          "seats": [
+            4,
+            9
+          ],
+          "payload": {
+            "reason": "contact",
+            "s": 2096.12345362
+          }
+        }
+      ],
+      "official_stream_hashes": {
+        "public_events": "4ed9adf2433f04a0495824f07e699fe793ee45ac3224a752e4cf2ee97e75a4e7",
+        "public_static": "33d7f18f174a7cb9a1688fa70a190c9d2454e3f79eda3c35c11474669d21a82f"
+      }
+    },
+    {
+      "match_id": "08640570-c76a-422d-b794-5a7f9e9edd73",
+      "finished_at": "2026-11-17T10:32:29.452160+00:00",
+      "version": 10,
+      "track": "crossover",
+      "own_seat": 8,
+      "race_end": "all_terminal",
+      "drivers": [
+        {
+          "display_name": "reverse_learning",
+          "seat": 1,
+          "position": 1,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 469.947,
+          "gap_to_winner_s": 0.0,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 102.948,
+            "lap": 2
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 3
+            },
+            {
+              "compound": "medium",
+              "laps": 1
+            }
+          ],
+          "qualifying_position": 2,
+          "display_points": 25
+        },
+        {
+          "display_name": "Yu Liu",
+          "seat": 2,
+          "position": 2,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 471.125,
+          "gap_to_winner_s": 1.178,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 104.603,
+            "lap": 1
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 1,
+          "display_points": 18
+        },
+        {
+          "display_name": "zkdw66",
+          "seat": 8,
+          "position": 4,
+          "status": "finished",
+          "laps": 4,
+          "total_time_s": 507.526,
+          "gap_to_winner_s": 37.579,
+          "laps_behind": 0,
+          "fastest_lap": {
+            "time_s": 117.693,
+            "lap": 1
+          },
+          "pit_stops": 1,
+          "tyre_stints": [
+            {
+              "compound": "soft",
+              "laps": 2
+            },
+            {
+              "compound": "medium",
+              "laps": 2
+            }
+          ],
+          "qualifying_position": 7,
+          "display_points": 12
+        }
+      ],
+      "own_incidents": [],
+      "official_stream_hashes": {
+        "public_events": "c2baa3612e9f69662a8d21ae555c97cb2810e7a4e2c40d66c22cb67a6f106d25",
+        "public_static": "34865de66785582ccf18a475d69501939c8506bad2d96cf2b5d7871b0ab62377"
+      }
+    }
+  ],
+  "latest_parkland": {
+    "race_frames": 12059,
+    "verified_race_frame_chunks": [
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274
+    ],
+    "sector_end_m": [
+      289.7921545718153,
+      579.5843091436305,
+      869.3764637154458,
+      1159.168618287261,
+      1448.9607728590763,
+      1738.7529274308915,
+      2028.5450820027067,
+      2318.337236574522,
+      2608.129391146337,
+      2897.9215457181526,
+      3187.713700289968,
+      3477.505854861783,
+      3767.298009433599,
+      4057.0901640054135,
+      4346.882318577229,
+      4636.674473149044,
+      4926.46662772086,
+      5216.258782292674,
+      5506.05093686449,
+      5795.843091436305
+    ],
+    "drivers": [
+      {
+        "seat": 0,
+        "classification": 6,
+        "max_speed_kmh": 342.91656,
+        "on_track_time_fractions": {
+          "throttle": 0.4963103616524089,
+          "brake": 0.04159804535577362,
+          "braking": 0.2785080358333112,
+          "full_throttle": 0.33759580771221825,
+          "coasting": 0.01776012562267759,
+          "empty_battery": 0.16454721247734722,
+          "attack": 0.0788183191996072,
+          "aero_x": 0.27017997720663295,
+          "aid_available": 0.0,
+          "aid_active": 0.0
+        },
+        "fuel_left_kg": 3.1841,
+        "total_seconds_per_sector": [
+          22.081261821198837,
+          14.400107009940143,
+          14.136315521955794,
+          43.64431235703819,
+          25.250834700232645,
+          16.29060874318202,
+          14.358775349089683,
+          27.579415513094318,
+          39.122115195731794,
+          32.30653923103273,
+          35.14545229046371,
+          17.213947862972873,
+          13.887670408470512,
+          17.96148208752811,
+          44.73317390630564,
+          22.429509749757244,
+          14.829057398384748,
+          15.832564750797019,
+          32.16132057766367,
+          18.93720151427965
+        ],
+        "mean_speed_per_sector": [
+          259.1550960283232,
+          289.6194507220096,
+          295.3187530766243,
+          94.53485982880144,
+          165.2079681214604,
+          256.70942719090937,
+          290.975376865503,
+          151.6471460741621,
+          106.18445360255758,
+          129.3452227538619,
+          118.69536438750131,
+          242.5173156895871,
+          300.48082791438037,
+          232.62130950182814,
+          93.26135466926176,
+          186.01670715378742,
+          281.4035468205405,
+          263.37310314781854,
+          129.71384643909317,
+          176.77771357130314
+        ]
+      },
+      {
+        "seat": 9,
+        "classification": 1,
+        "max_speed_kmh": 313.24716,
+        "on_track_time_fractions": {
+          "throttle": 0.7160990958639105,
+          "brake": 0.05811108261182291,
+          "braking": 0.1729799852782988,
+          "full_throttle": 0.5887664179773275,
+          "coasting": 0.0043401698433894005,
+          "empty_battery": 0.0,
+          "attack": 0.2126374287117091,
+          "aero_x": 0.40399936987239443,
+          "aid_available": 0.19221266449253932,
+          "aid_active": 0.16025513529743568
+        },
+        "fuel_left_kg": 3.3018,
+        "total_seconds_per_sector": [
+          20.45175137370859,
+          14.363299632805479,
+          13.743516438017195,
+          29.868743687569804,
+          24.21185320024597,
+          15.901899898604142,
+          14.537803990492648,
+          18.95516553043285,
+          28.386632408938112,
+          23.009767309277777,
+          24.972384140063014,
+          16.8772846307113,
+          14.241320911647108,
+          14.115563486750489,
+          28.602944752164376,
+          19.50458011628575,
+          15.003571962226488,
+          13.710777046404246,
+          23.414855673279362,
+          17.790650708482872
+        ],
+        "mean_speed_per_sector": [
+          241.6786813497418,
+          290.5179098832099,
+          303.625866213818,
+          139.83734507751134,
+          172.272518880442,
+          261.32636615477685,
+          286.9144486065384,
+          220.00198339234677,
+          145.22399778293737,
+          181.145608399144,
+          166.38123276476253,
+          246.87156594856086,
+          292.88506476197153,
+          295.6661186057349,
+          143.86177940721888,
+          213.7045633669566,
+          278.08336258079987,
+          304.36858835938926,
+          180.07268949053343,
+          208.65919893456686
+        ]
+      },
+      {
+        "seat": 8,
+        "classification": 2,
+        "max_speed_kmh": 339.75864,
+        "on_track_time_fractions": {
+          "throttle": 0.6241400329687039,
+          "brake": 0.04470838627871645,
+          "braking": 0.22335927810519174,
+          "full_throttle": 0.5302517054406466,
+          "coasting": 0.00924532548616718,
+          "empty_battery": 0.0,
+          "attack": 0.04536755611637925,
+          "aero_x": 0.33466988466599457,
+          "aid_available": 0.0,
+          "aid_active": 0.0
+        },
+        "fuel_left_kg": 3.3286,
+        "total_seconds_per_sector": [
+          18.06396879350814,
+          13.441224525636812,
+          12.858097396906032,
+          39.28541310266553,
+          24.19498509867026,
+          15.634909234382576,
+          14.34026697300851,
+          22.382565075500906,
+          33.35693847935477,
+          25.318288751019054,
+          25.589631814110817,
+          16.49121789811784,
+          13.555334006593284,
+          14.94897546783477,
+          27.389099364331287,
+          18.550449477720804,
+          13.78503700718079,
+          13.889823625463123,
+          26.063444675544133,
+          18.26339965605962
+        ],
+        "mean_speed_per_sector": [
+          237.0777917194184,
+          310.41852062507456,
+          324.5694239069338,
+          111.40621433107951,
+          171.52577564208448,
+          262.1532675577618,
+          288.8828483296981,
+          187.29099170632546,
+          126.31286823578183,
+          164.2654384182775,
+          162.3656769510934,
+          252.22637725518754,
+          307.79716140000005,
+          279.2882020689332,
+          148.36348618713072,
+          225.15613038427276,
+          302.6274166747828,
+          300.7690214861281,
+          156.0486257467946,
+          221.7025954068456
+        ]
+      }
+    ]
+  },
+  "latest_replay": {
+    "calls": 17599,
+    "baseline_recorded_differences": 0,
+    "candidate_recorded_differences": 4371,
+    "active_race_calls": 14470,
+    "braking_fraction": [
+      0.27809260539046304,
+      0.23669661368348308
+    ],
+    "full_throttle_fraction": [
+      0.3375259156876296,
+      0.36475466482377333
+    ]
+  },
+  "crawl_replay": {
+    "calls": 24618,
+    "baseline_recorded_differences": 0,
+    "definition": "Race seconds 150 through 650, own speed <6 m/s, seat 1 ahead within 12 m. Clear destination is a committed lane at least 2.7 m from the tracked car laterally. Fixed observations.",
+    "baseline": {
+      "calls": 15001,
+      "throttle": 609.6998657650561,
+      "braking": 1201,
+      "full": 0,
+      "emergency": 23,
+      "saving": 0,
+      "traffic": 15001,
+      "pass_committed": 15001,
+      "pass_clear": 0
+    },
+    "candidate": {
+      "calls": 15001,
+      "throttle": 79.59185884407123,
+      "braking": 12894,
+      "full": 0,
+      "emergency": 12671,
+      "saving": 0,
+      "traffic": 15001,
+      "pass_committed": 15001,
+      "pass_clear": 15001
+    }
+  },
+  "tests_passed": 139,
+  "benchmark": {
+    "calls": 30000,
+    "invalid_or_exception_count": 0,
+    "act_p99_ms": 0.498,
+    "source_sha256": {
+      "agent.py": "08366b879f1797037edf7cbe9338a9a293cc25de9562a1d15a84788e1ce3a520",
+      "track_data.py": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7",
+      "track_parkland.py": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c",
+      "track_highland.py": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33",
+      "track_crossover.py": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5",
+      "design.json": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    }
+  },
+  "wet_kinematic_model": {
+    "baseline": [
+      {
+        "track": "parkland",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 116.567,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.1684,
+        "max_abs_heading_rad": 0.1524,
+        "max_unlimited_lateral_demand_mps2": 19.362,
+        "crossed_public_road_edge": false
+      },
+      {
+        "track": "highland",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 161.633,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.2651,
+        "max_abs_heading_rad": 0.151,
+        "max_unlimited_lateral_demand_mps2": 16.696,
+        "crossed_public_road_edge": false
+      },
+      {
+        "track": "crossover",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 143.6,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.1247,
+        "max_abs_heading_rad": 0.0797,
+        "max_unlimited_lateral_demand_mps2": 16.21,
+        "crossed_public_road_edge": false
+      }
+    ],
+    "candidate": [
+      {
+        "track": "parkland",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 115.367,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.1684,
+        "max_abs_heading_rad": 0.1524,
+        "max_unlimited_lateral_demand_mps2": 19.386,
+        "crossed_public_road_edge": false
+      },
+      {
+        "track": "highland",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 160.033,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.2651,
+        "max_abs_heading_rad": 0.1509,
+        "max_unlimited_lateral_demand_mps2": 16.575,
+        "crossed_public_road_edge": false
+      },
+      {
+        "track": "crossover",
+        "assumed_speed_cap_mps": null,
+        "kinematic_body_sideslip": true,
+        "assumed_driver_lateral_mps2": 17.1675,
+        "approx_one_lap_seconds": 142.567,
+        "completed_one_synthetic_lap": true,
+        "max_abs_offset_m": 1.1246,
+        "max_abs_heading_rad": 0.0797,
+        "max_unlimited_lateral_demand_mps2": 16.126,
+        "crossed_public_road_edge": false
+      }
+    ]
+  },
+  "model_assumptions": {
+    "wetness": 0.8,
+    "tyre_temp_c": 55,
+    "downforce_coefficient": 1.2,
+    "body_sideslip": true
+  },
+  "bundle_sha256": "7786c89635772cfbf10ae68e4a066ac4c27fac9980d644cff412de0b15fdcced"
+}

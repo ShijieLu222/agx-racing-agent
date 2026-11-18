@@ -7,7 +7,7 @@
 - [官方赛车工具包](https://agx.cool/docs/schema/kits/agx-racing-kit.zip)
 - [公开赛道数据](https://agx.cool/docs/schema/maps/racing.html)
 
-`track_data.py` / `track_*.py` 中的赛道几何数据库派生于官方公开地图，原始数据标注：**© OpenStreetMap contributors · ODbL 1.0; Copernicus DEM / SRTM**。派生几何数据库按 [Open Database License 1.0](https://opendatacommons.org/licenses/odbl/1-0/) 提供；[OpenStreetMap 版权说明](https://www.openstreetmap.org/copyright)。本仓库保留这些归属，生成脚本和源数据 SHA256 用于追溯。该数据许可不代表 AGX 引擎或其他官方代码的许可。
+`track_data.py` / `track_*.py` 中的赛道几何数据库派生于官方公开地图，原始数据标注：**© OpenStreetMap contributors · ODbL 1.0; Copernicus DEM / SRTM**。派生几何数据库按 [Open Database License 1.0](https://opendatacommons.org/licenses/odbl/1-0/) 提供；[OpenStreetMap 版权说明](https://www.openstreetmap.org/copyright)。本仓库保留这些归属，生成脚本和源数据 SHA256 用于追溯。该数据许可不代表 AGX 引擎或其他官方代码的许可。 `parkland_line.py` 中的走线控制点亦由该公开地图拟合，采用相同的数据许可和署名。
 
 控制器研究还参考 CMU、F1TENTH 和 TUM 的公开工作；未复制其源码或引入相关运行库，具体链接与许可证见[策略参考](docs/strategy-references.md)。
 

@@ -42,10 +42,14 @@ def baseline_source(commit):
         raise ValueError('--baseline-ref must be a full 40-character commit SHA')
     def read(name):
         return subprocess.check_output(['git', 'show', commit + ':' + name], cwd=ROOT)
-    for name in ('track_data.py', 'track_parkland.py', 'track_highland.py', 'track_crossover.py'):
+    source = read('agent.py')
+    modules = ['track_data.py', 'track_parkland.py', 'track_highland.py', 'track_crossover.py']
+    if b'import parkland_line' in source:
+        modules.append('parkland_line.py')
+    for name in modules:
         if read(name) != (ROOT / name).read_bytes():
             raise ValueError('baseline geometry differs; use an isolated matching checkout')
-    return read('agent.py')
+    return source
 
 
 def complete_rows(path):

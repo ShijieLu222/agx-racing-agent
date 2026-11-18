@@ -1,0 +1,145 @@
+{
+  "bundle_sha256": "2f7fec94f16a14d32bb0abe2383ccd03c03d925c8966503ca7fdf3e6ecc8c082",
+  "baseline_version": 11,
+  "unit_tests": 147,
+  "telemetry_replays": [
+    {
+      "match_prefix": "75591",
+      "calls": 16872,
+      "exceptions": 0,
+      "invalid_actions": 0,
+      "changed_actions_vs_recorded": 3485
+    },
+    {
+      "match_prefix": "b628",
+      "calls": 17599,
+      "exceptions": 0,
+      "invalid_actions": 0,
+      "changed_actions_vs_recorded": 7082
+    },
+    {
+      "match_prefix": "70b0",
+      "calls": 24618,
+      "exceptions": 0,
+      "invalid_actions": 0,
+      "changed_actions_vs_recorded": 19619
+    }
+  ],
+  "benchmark": {
+    "source_sha256": {
+      "agent.py": "08b0d26a5c4b382008d6645bde964eaf2a20dab5f4010b714e7bc6f1242b19c8",
+      "parkland_line.py": "0891c18c1a4e54ec453d4db0ae1e102621f4bd7d84a218fa1c8462fe9663e36e",
+      "track_data.py": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7",
+      "track_parkland.py": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c",
+      "track_highland.py": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33",
+      "track_crossover.py": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5",
+      "design.json": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "calls": 30000,
+    "invalid_or_exception_count": 0,
+    "act_p99_ms": 0.638
+  },
+  "model_conditions": {
+    "tyre_temp_c": 55,
+    "downforce_coefficient": 1.2,
+    "body_sideslip": true,
+    "sector_boundaries_m": [
+      [
+        2029,
+        3188
+      ],
+      [
+        4057,
+        4347
+      ]
+    ],
+    "traffic_case": "moving leader at +24 m through stations 4070–4180; synthetic"
+  },
+  "model_results": [
+    {
+      "track": "parkland",
+      "wetness": 0,
+      "traffic": false,
+      "v11_seconds": [
+        26.525,
+        9.008
+      ],
+      "v12_seconds": [
+        25.448,
+        7.426
+      ],
+      "v11_lap_seconds": 94.367,
+      "v12_lap_seconds": 91.833,
+      "v12_min_center_to_edge_m": 2.814
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.5,
+      "traffic": false,
+      "v11_seconds": [
+        31.344,
+        10.398
+      ],
+      "v12_seconds": [
+        29.578,
+        8.653
+      ],
+      "v11_lap_seconds": 109.033,
+      "v12_lap_seconds": 105.7,
+      "v12_min_center_to_edge_m": 2.824
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.85,
+      "traffic": false,
+      "v11_seconds": [
+        33.233,
+        11.082
+      ],
+      "v12_seconds": [
+        31.498,
+        9.265
+      ],
+      "v11_lap_seconds": 116.467,
+      "v12_lap_seconds": 112.967,
+      "v12_min_center_to_edge_m": 2.831
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.5,
+      "traffic": true,
+      "v11_seconds": [
+        31.344,
+        10.243
+      ],
+      "v12_seconds": [
+        29.578,
+        9.568
+      ],
+      "v11_lap_seconds": 108.867,
+      "v12_lap_seconds": 106.633,
+      "v12_min_center_to_edge_m": 2.811
+    },
+    {
+      "track": "highland",
+      "wetness": 0.5,
+      "traffic": false,
+      "v11_seconds": [],
+      "v12_seconds": [],
+      "v11_lap_seconds": 150.367,
+      "v12_lap_seconds": 150.367,
+      "v12_min_center_to_edge_m": 5.193
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.5,
+      "traffic": false,
+      "v11_seconds": [],
+      "v12_seconds": [],
+      "v11_lap_seconds": 135.033,
+      "v12_lap_seconds": 135.033,
+      "v12_min_center_to_edge_m": 4.084
+    }
+  ],
+  "limitations": "Kinematic diagnostic only, no AGX tyre dynamics, collisions or measured race-time improvement. Original telemetry is a fixed observation replay."
+}

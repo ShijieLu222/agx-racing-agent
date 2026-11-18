@@ -1,4 +1,4 @@
-"""AGX Formula Racing v10 candidate: cool-dry pace and aero-aware braking.
+"""AGX Formula Racing v12: a width-bounded Parkland line for steering and pace.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -6,6 +6,11 @@ private engine model or a claim of measured race performance. See docs/rules.md.
 """
 import math
 from bisect import bisect_right
+
+try:
+    import parkland_line
+except ImportError:
+    parkland_line = None
 
 try:
     from track_data import TRACKS, geometry_at, pit_distance, aero_remaining
@@ -88,26 +93,27 @@ def longitudinal_grip(observation, geometry):
     return math.sqrt(max(0.0, grip * grip - lateral * lateral))
 
 
-def stability_state(car, geometry):
+def stability_state(car, geometry, path_heading=0.0, path_curve=None):
     """Instantaneous risk; flags alone cannot latch a slow driving mode."""
     speed = max(0.0, number(car.get("speed_mps")))
     vx, vy = number(car.get("vx"), speed), number(car.get("vy"))
     heading = number(car.get("heading_error"))
     beta = math.atan2(vy, max(6.0, vx))
     along = (vx * math.cos(heading) - vy * math.sin(heading)) / max(.3, 1 - number(car.get("n")) * geometry[0])
-    yaw_error = number(car.get("yaw_rate")) - along * geometry[0]
+    expected_yaw = along * geometry[0] if path_curve is None else speed * path_curve
+    yaw_error = number(car.get("yaw_rate")) - expected_yaw
     # In a slow hairpin the velocity vector can follow the road while the body
     # points across it: heading and beta compensate. V7 mistakenly braked that
     # normal motion down to its low-speed recovery cutoff. Use course error for
     # path departure, and require excess yaw in the direction of rotation plus
     # opposing lateral velocity before invoking early oversteer recovery.
-    course_error = (heading + beta + math.pi) % (2 * math.pi) - math.pi
+    course_error = (heading + beta - path_heading + math.pi) % (2 * math.pi) - math.pi
     yaw = number(car.get("yaw_rate"))
     oversteer = yaw * yaw_error > 0 and yaw * beta < 0
     evidence = clip((abs(yaw_error) - .06) / .12, 0, 1) if oversteer else 0.0
     early_spin = max((abs(beta) - .035) / .14, (abs(yaw_error) - .22) / .6) * evidence
     risk = max(early_spin, (abs(course_error) - .12) / .28,
-               (abs(heading) - .30) / .35, (abs(beta) - .20) / .25)
+               (abs(heading - path_heading) - .30) / .35, (abs(beta) - .20) / .25)
     return clip(risk, 0, 1) * clip((speed - 5) / 10, 0, 1), beta, yaw_error
 
 
@@ -170,6 +176,39 @@ class Driver:
         self.fuel_power_scale = 1.0
         self.previous_preview = None
         self.planning_knots = None
+        self.traffic_history = {}
+        self.line_active = False
+        self.line_reference = None
+        self.line_tracked = False
+        self.returning_from_line = False
+
+    def select_line(self, observation, geometry):
+        car = observation["self"]
+        s = number(car.get("s"))
+        n = number(car.get("n"))
+        speed = number(car.get("speed_mps"))
+        was_active = self.line_active
+        self.line_active = bool(
+            parkland_line and parkland_line.approach(number(observation.get("track_length_m")), s)
+            and self.pass_seat is None and not self.returning_from_line
+            and min(geometry[2] - n, geometry[3] + n) > 2
+            and not any(r.get("status") == "racing"
+                        and -25 - 1.5 * max(0, number(r.get("speed_mps")) - speed)
+                        < number(r.get("gap_m")) < max(70, 1.5 * speed)
+                        for r in observation.get("rivals", [])))
+        self.line_reference = parkland_line.reference(s) if self.line_active else None
+        self.line_tracked = self.line_active
+        if self.line_active:
+            offset, tangent = self.line_reference[:2] if self.line_reference else (0.0, 0.0)
+            course = number(car.get("heading_error")) + math.atan2(
+                number(car.get("vy")), max(6, number(car.get("vx"), speed)))
+            self.line_tracked = abs(n - offset) < 1.25 and abs(course - tangent) < .14
+            if not was_active and not self.line_tracked:
+                self.line_active = False
+                self.line_reference = None
+        if was_active and not self.line_active:
+            self.lane = n
+            self.returning_from_line = abs(self.lane) > .1
 
     def public_window(self, length, station, horizon):
         """All original map knots ahead; a moving probe grid can skip peaks."""
@@ -282,10 +321,17 @@ class Driver:
             lateral = v2 * abs(kappa)
             # V9 discarded all aero-supported braking by capping at mu*g.
             # Retain the mechanical brake limit and combined lateral demand.
-            # Wet conditions continuously return to the validated v9 ceiling.
-            ceiling = braking + dry_braking * (brake_limit - braking)
+            # In the wet retain the wet tyre coefficient. Credit only half of
+            # the extra normal load for approach braking, bounded by hardware.
+            wet_aero = .5 * mu * aero_coefficient * v2 / mass
+            ceiling = min(brake_limit, braking + dry_braking * (brake_limit - braking)
+                          + (1 - dry_braking) * wet_aero)
             return min(ceiling, math.sqrt(max(0.0, capacity * capacity - lateral * lateral)))
         curve, grade, width_left, width_right = geometry
+        if self.line_reference:
+            path_curve = curve + self.line_reference[2]
+            if self.line_tracked or abs(path_curve) > abs(curve):
+                curve = path_curve
         target = corner_speed(curve)
         planning = [row for row in rows if row[0] <= horizon]
         # Preserve the live v4's full ~2 m maps, checking every original knot.
@@ -300,6 +346,8 @@ class Driver:
                     break
                 planning.append([distance, *sample, 0.0])
         planning.sort(key=lambda r: r[0])
+        if self.line_active:
+            planning = parkland_line.planning_window(planning, station, self.line_tracked)
         if not planning:
             target = min(target, 12.0)
         else:
@@ -321,7 +369,7 @@ class Driver:
                 # decelerating segment. Keep v9's lateral-demand evaluation;
                 # use the smaller budget rather than assuming peak aero holds.
                 decel = segment_braking(trial_v2, max(abs(kappa), abs(next_curve)))
-                if dry_braking > 0:
+                if aero_coefficient > 0 or dry_braking > 0:
                     decel = min(decel, segment_braking(min(trial_v2, envelope * envelope),
                                                        max(abs(kappa), abs(next_curve))))
                 decel += grade_accel
@@ -329,7 +377,11 @@ class Driver:
                                   + 2 * decel * gap)))
                 next_distance, next_grade, next_curve = distance, slope, kappa
             trial_v2 = min(target * target, max(0.0, envelope * envelope + 2 * braking * next_distance))
-            decel = segment_braking(trial_v2, max(abs(curve), abs(next_curve))) + 9.81 * min(grade, next_grade)
+            segment_curve = max(abs(curve), abs(next_curve))
+            decel = segment_braking(trial_v2, segment_curve)
+            if next_distance > 0 and aero_coefficient > 0:
+                decel = min(decel, segment_braking(min(trial_v2, envelope * envelope), segment_curve))
+            decel += 9.81 * min(grade, next_grade)
             target = min(target, math.sqrt(max(0.0, envelope * envelope
                                               + 2 * decel * next_distance)))
         self.last_target = max(3.0, target)
@@ -348,6 +400,20 @@ class Driver:
         n = number(car.get("n"))
         nearby = [r for r in observation.get("rivals", [])
                   if r.get("status") == "racing"]
+        # Predict only a short lateral crossing from consecutive legal rival
+        # observations. Do not assume that a currently offset car stays there.
+        now = number(observation.get("time"))
+        clearances, history = {}, {}
+        for rival in nearby:
+            seat, dn = rival.get("seat"), number(rival.get("dn"))
+            previous = self.traffic_history.get(seat)
+            projected = dn
+            if previous is not None and 0 < now - previous[0] <= .25:
+                lateral_rate = clip((dn - previous[1]) / (now - previous[0]), -8.0, 8.0)
+                projected += .6 * lateral_rate
+            clearances[seat] = (0.0 if dn * projected <= 0 else min(abs(dn), abs(projected)))
+            history[seat] = (now, dn)
+        self.traffic_history = history
         near_rows = [r for r in rows if r[0] <= 100]
         straight = bool(near_rows) and max(abs(r[1]) for r in near_rows) < 0.0025
         width_left = min((r[3] for r in near_rows), default=4.0)
@@ -374,44 +440,64 @@ class Driver:
         slow_clearance = bool(front and speed < 6
                               and number(front.get("speed_mps")) < 3
                               and number(front.get("gap_m")) >= 6)
-        if (self.pass_seat is None and front and (straight or slow_clearance or moving_pass)
-                and (number(front.get("gap_m")) > 12 or slow_clearance)):
-            front_n = n + number(front.get("dn"))
+        # A crawling leader can drift into the selected side over a long pass.
+        # Keep following its actual position while looking for a new clear side.
+        reselect = bool(self.pass_seat is not None and tracked and speed < 8
+                        and 0 < number(tracked.get("gap_m")) < 30
+                        and number(tracked.get("speed_mps")) < 5
+                        and abs(n + number(tracked.get("dn")) - self.pass_lane) < 2.6)
+        start_pass = (self.pass_seat is None and front and (straight or slow_clearance or moving_pass)
+                      and (number(front.get("gap_m")) > 12 or slow_clearance))
+        if start_pass or reselect:
+            obstacle = tracked if reselect else front
+            front_n = n + number(obstacle.get("dn"))
             candidates = sorted((-3.0, 3.0), key=lambda x: -abs(x - front_n))
             for lane in candidates:
                 if not low <= lane <= high or abs(lane - front_n) < 2.7:
                     continue
+                # With overlapping longitudinal envelopes move only away from
+                # the leader, never across its current lateral position.
+                if (reselect and number(obstacle.get("gap_m")) < 6
+                        and (n - front_n) * (lane - front_n) <= 0):
+                    continue
                 clear = all(not (-18 < number(r.get("gap_m")) < 50
-                                and abs(n + number(r.get("dn")) - lane) < 2.6)
-                            for r in nearby)
+                                and min(n, lane) - 2.6 < n + number(r.get("dn")) < max(n, lane) + 2.6)
+                            for r in nearby if r is not obstacle)
                 if clear:
-                    self.pass_seat, self.pass_lane = front.get("seat"), lane
+                    self.pass_seat, self.pass_lane = obstacle.get("seat"), lane
+                    reselect = False
                     break
         requested = clip(self.pass_lane, min(low, 0.0), max(high, 0.0))
         # Recheck a committed lane every callback, including vehicles that were
         # previously outside the observation window. Freeze lateral travel when
         # that lane becomes occupied; current-clearance following still applies.
         occupied = any(r.get("seat") != self.pass_seat
-                       and -18 < number(r.get("gap_m")) < 50
-                       and abs(n + number(r.get("dn")) - requested) < 2.6
+                       and -18 - (1.5 * max(0, number(r.get("speed_mps")) - speed)
+                                  if self.returning_from_line else 0) < number(r.get("gap_m")) < 50
+                       and min(n, requested) - 2.6 < n + number(r.get("dn")) < max(n, requested) + 2.6
                        for r in nearby)
-        if self.pass_seat is not None and occupied:
+        if (self.pass_seat is not None or self.returning_from_line) and (occupied or reselect):
             requested = self.lane
         self.lane += clip(requested - self.lane, -0.85 * dt, 0.85 * dt)
-        if self.pass_seat is not None and not straight:
+        if abs(self.lane) < .1 or self.pass_seat is not None:
+            self.returning_from_line = False
+        if (self.pass_seat is not None or self.returning_from_line) and not straight:
             # An offset lane may have a tighter radius than the centreline.
             curvature = max((abs(r[1]) for r in near_rows), default=0.0)
             target *= math.sqrt(max(.6, 1 - curvature * max(abs(n), abs(self.lane))))
         # Collision constraint remains active while changing lanes. It is based
         # on current lateral clearance, not the hoped-for future passing lane.
         emergency = False
-        for rival in leaders:
+        threats = [r for r in nearby if 0 < number(r.get("gap_m")) < 65
+                   and clearances[r.get("seat")] < 2.7]
+        for rival in threats:
             gap = number(rival.get("gap_m"))
             front_speed = max(0.0, number(rival.get("speed_mps")))
-            # As the cars separate laterally, release the longitudinal following
-            # constraint smoothly rather than braking right until a hard lane
-            # threshold. This allows a committed pass to continue beside a car.
-            lateral_overlap = math.sqrt(max(0.0, 1 - (abs(number(rival.get("dn"))) / 2.7) ** 2))
+            # Preserve the six-metre longitudinal buffer while materially
+            # overlapping. V9/v10's elliptical shrink reduced it to ~4 m at
+            # 2 m sideways separation, risking contact during a cut-in.
+            # Release only across the final 0.3 m before existing side clearance.
+            lateral_overlap = clip((2.7 - clearances[rival.get("seat")]) / .3, 0.0, 1.0)
             closing = max(0.0, speed - front_speed)
             stopping_gap = closing * closing / (2 * max(1.0, getattr(self, "available_braking", 7.0)))
             desired_gap = (6.0 + speed * dt + stopping_gap) * lateral_overlap
@@ -572,14 +658,21 @@ class Driver:
             self.last_steer = 0.0
             self.braking, self.boosting = False, False
             return neutral()
+        self.select_line(observation, geometry)
         target = self.speed_plan(observation, rows, geometry, dt)
         target, lane, emergency, straight = self.traffic_plan(observation, rows, target, dt)
         saving = self.fuel_saving(observation)
         speed = max(0.0, number(car.get("speed_mps")))
         kappa, grade, _, _ = geometry
         heading = number(car.get("heading_error"))
-        stability, sideslip, yaw_error = stability_state(car, geometry)
-        desired_heading = -math.atan2(0.9 * (number(car.get("n")) - lane), speed + 7)
+        path_heading = 0.0
+        if self.line_reference:
+            lane, path_heading, correction = self.line_reference[:3]
+            self.lane = lane
+            kappa += correction
+        stability, sideslip, yaw_error = stability_state(
+            car, geometry, path_heading, kappa if self.line_reference else None)
+        desired_heading = path_heading - math.atan2(0.9 * (number(car.get("n")) - lane), speed + 7)
         # Yaw response per radian of steer grows with speed. A fixed large
         # derivative gain can alternate wheel commands at the 30 Hz boundary.
         yaw_gain = 0.06 / (1.0 + speed / 25.0)
@@ -634,7 +727,7 @@ class Driver:
         boost_error = 0.5 if self.boosting else 1.5
         eligible = bool(error > boost_error and soc > 0.0 and power_safe
                         and not self.braking)
-        mode = self.energy_mode(observation, geometry, force, braking_rate, eligible)
+        mode = self.energy_mode(observation, (kappa, *geometry[1:]), force, braking_rate, eligible)
         self.boosting = mode in (2, 3)
         boost = self.boosting
         drives = car.get("drive_force_n") or []

@@ -2,6 +2,10 @@
 
 用于 AGX 多人赛车的 Python 车手、车辆设计与实验。合同 `rsi-racing-4.4`，核查日期 2026-11-15。
 
+**2026-11-18 13:15（北京时间）**　AGX 已通过赛车 v12 准入。Parkland 两组连续弯使用由赛道宽度约束的走线，转向和制动规划共用其曲率。附近有车时采用交通策略。三场本人日志共 59,089 次决策重放、147 项测试通过。[平台回执](experiments/submission-v12.json) · [闭环模型与验证数据](experiments/v12-validation.json)
+
+**2026-11-18**　最近八场均使用 v10，一冠一季。v11 已于北京时间 11:18 提交，11:19 确认通过 AGX 准入。[平台回执](experiments/submission-v11.json)。该版本针对 Crossover 跟随慢车期间的超车选边及 Parkland 湿地入弯制动进行了优化，已经过两场本人日志共 42,217 次决策重放。详见[最近八场、前两名对比与参赛包](docs/recent-races-2026-11-18.md)。
+
 **2026-11-17 更新：赛车 v10 已上传并通过 AGX 准入。** 核查到 v9 在 08:34 Parkland 正赛第九，随后 10:35 湿地场第二。已完成两场与前三名对比；本地修正冷胎干地校准及下压力制动规划，125 项测试、60,130 次真实合法输入重放通过。发布包 `dist/agx-racing-v10-candidate.zip`，指纹 `4e36a195502d`；版本号 10，详见[平台回执](experiments/submission-v10.json)。详见[第九名原因、最新亚军及 v10 验证](docs/parkland-v10-review-2026-11-17.md)。
 
 **历史 v9（8 kg）已通过 AGX 准入，赛车卡片显示“已发布代码 v9”；提交包指纹 `507756dfbe4b`，上传时间 2026-11-16 14:55 北京时间。** 修正起步油耗外推引发的误省油，在暖胎干地条件下适度提高抓地规划，允许满足速度、曲率和道路空间条件时绕过行驶中的慢车。保留冷胎/湿地基线、真正失稳保护及碰撞制动。详见[v9 改动与验证](docs/v9-pace-2026-11-16.md)及[发布回执](experiments/submission-v9.json)。下列策略与 118 项测试说明保留为 v9 历史基线；当前候选版见上方更新。
@@ -26,7 +30,7 @@ python3 -B scripts/kinematic_check.py
 python3 -B scripts/pack.py
 ```
 
-`dist/agx-racing-agent.zip` 仅包含 `agent.py`、`design.json`、`track_data.py` 和三个 `track_*.py`。打包器校验语法、设计和大小，固定 ZIP 元数据；日志、凭据、测试和文档不进入参赛包。
+`dist/agx-racing-agent.zip` 包含 `agent.py`、`design.json`、`parkland_line.py`、`track_data.py` 和三个赛道几何模块。打包器校验语法、设计和大小，固定 ZIP 元数据；日志、凭据、测试和文档不进入参赛包。
 
 在[报名页](https://agx.cool/#/competitions/1eb91364-950b-5725-aa4b-3501b16860ec/enter)上传后，核对校验结果、当前代码版本及指纹。新版本影响随后新分配的比赛。
 

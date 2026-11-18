@@ -6,7 +6,7 @@ import zipfile
 from validate_design import strict_json, validate
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ('agent.py', 'track_data.py', 'track_parkland.py', 'track_highland.py',
+FILES = ('agent.py', 'parkland_line.py', 'track_data.py', 'track_parkland.py', 'track_highland.py',
          'track_crossover.py', 'design.json')
 
 
