@@ -1,0 +1,53 @@
+{
+  "id": "48437392-2faa-4e57-91dc-cf43a1f86271",
+  "agent_id": "2756a993-5961-40d7-85ac-c534bb4d6e9e",
+  "runtime_id": "python-agent-v1",
+  "bundle_sha256": "323c1c5a8bcd0a0b4e4ee7b1892eb613550bcaacfbe3e7f5c0940cf23f9d3a0c",
+  "profile_digest": "9ac1e96a97aa638726da610004276167288e3dfdb22afc84ade6c35f8084d2fb",
+  "contract_id": "rsi-racing-4.4",
+  "game_id": "racing",
+  "rules_version": "rsi-racing-4.4",
+  "compressed_bytes": 172396,
+  "expanded_bytes": 515022,
+  "tensor_bytes": 0,
+  "files": {
+    "agent.py": {
+      "bytes": 42076,
+      "sha256": "a06c04dd4cefbaaecfd0031d19ba30808cce47d00dc03bffea8c3f4cbef739ea"
+    },
+    "design.json": {
+      "bytes": 1055,
+      "sha256": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "track_data.py": {
+      "bytes": 3234,
+      "sha256": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7"
+    },
+    "parkland_line.py": {
+      "bytes": 5889,
+      "sha256": "6945cf99961e1f68f3de3e2bacc92662bfc59db776bfbb3bd9ae64cde6646222"
+    },
+    "track_highland.py": {
+      "bytes": 174479,
+      "sha256": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33"
+    },
+    "track_parkland.py": {
+      "bytes": 142262,
+      "sha256": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c"
+    },
+    "track_crossover.py": {
+      "bytes": 146027,
+      "sha256": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5"
+    }
+  },
+  "admission": "passed",
+  "fault_code": null,
+  "created_at": "2026-11-20T01:54:20.185145+00:00",
+  "version_id": "8fec32ac-f1f0-4699-aa80-0f55d7a3cc30",
+  "number": 13,
+  "last_checked_at": "2026-11-20T01:54:33.700Z",
+  "registration": {
+    "registered": true,
+    "agent_id": "2756a993-5961-40d7-85ac-c534bb4d6e9e"
+  }
+}
