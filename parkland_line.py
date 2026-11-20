@@ -1,4 +1,4 @@
-"""Bounded reference line derived from the public Parkland map (ODbL, see NOTICE)."""
+"""Bounded reference lines derived from public circuit maps (ODbL, see NOTICE)."""
 import math
 
 from track_data import TRACKS, geometry_at
@@ -35,11 +35,45 @@ CONTROLS = {
     ),
 }
 
+CROSSOVER_CONTROLS = {
+    470: (
+        0.0, 0.0, -0.356, -0.7959, -1.2131, -1.4786, -1.4981, -1.2141,
+        -0.6374, 0.1436, 0.9815, 1.7108, 2.2044, 2.4, 2.4, 2.1771,
+        1.7198, 1.2504, 1.1378, 1.4299, 1.8107, 2.031, 2.031, 1.8614,
+        1.6214, 1.4366, 1.417, 1.595, 1.9024, 2.2123, 2.4, 2.4,
+        2.1944, 1.7507, 1.128, 0.4044, -0.3387, -1.0296, -1.6039, -2.0002,
+        -2.1636, -2.0535, -1.6627, -1.0231, -0.212, 0.6523, 1.4224, 1.9599,
+        2.1617, 2.0812, 1.6976, 1.0295, 0.1972, -0.6591, -1.395, -1.8813,
+        -2.0344, -1.8983, -1.5067, -0.975, -0.4399, 0.0, 0.0,
+    ),
+    1140: (
+        0.0, 0.0, 0.3282, 0.7958, 1.312, 1.7655, 2.0977, 2.2993,
+        2.3957, 2.4, 2.3601, 2.1562, 1.7515, 1.159, 0.4403, -0.3277,
+        -1.0688, -1.7027, -2.141, -2.3122, -2.2235, -1.9416, -1.5902, -1.2944,
+        -1.1454, -1.1877, -1.4074, -1.7341, -2.0585, -2.2614, -2.2578, -2.0064,
+        -1.5515, -0.9894, -0.4214, 0.0907, 0.5396, 0.9568, 1.3709, 1.776,
+        2.1214, 2.3402, 2.3894, 2.2798, 2.0518, 1.7579, 1.4312, 1.0782,
+        0.6965, 0.3199, 0.0, 0.0,
+    ),
+    2020: (
+        0.0, 0.0, 0.3855, 0.9134, 1.5029, 2.03, 2.376, 2.4,
+        1.9824, 0.8631, -1.1285, -2.4, -0.6323, 1.1929, 2.0982, 2.4,
+        2.4, 2.4, 2.3824, 2.3766, 2.3838, 2.4, 2.4, 2.4,
+        2.0086, 0.1548, -2.2224, -2.4, -0.8112, 0.6705, 0.6648, 0.0,
+        0.0,
+    ),
+    2650: (
+        0.0, 0.0, -0.385, -0.9642, -1.6177, -2.1857, -2.4, -2.4,
+        -1.9742, -2.4, -2.4, -2.3041, -1.2816, -0.3611, 0.0, 0.0,
+    ),
+}
+
+
 # Each sample holds offset, tangent heading relative to the road, signed
 # curvature correction, path metres per road metre, and original road curvature.
-def build_samples():
+def build_samples(length, controls):
     samples = {}
-    for start, points in CONTROLS.items():
+    for start, points in controls.items():
         # Zero padding also gives a flat join at the physical endpoints.
         padded = (0.0,) + points + (0.0, 0.0)
         for ds in range((len(points)-1)*10 + 1):
@@ -52,8 +86,8 @@ def build_samples():
                      + (-3*t*t+2*t+1)*r + t*t*u) / 20
             second = ((1-t)*p + (3*t-2)*q + (1-3*t)*r + t*u) / 100
             s = start + ds
-            k = geometry_at(LENGTH, s)[0]
-            dk = geometry_at(LENGTH, s+.5)[0] - geometry_at(LENGTH, s-.5)[0]
+            k = geometry_at(length, s)[0]
+            dk = geometry_at(length, s+.5)[0] - geometry_at(length, s-.5)[0]
             a = 1-k*n
             metric = math.hypot(a, slope)
             curve = (a*(second + a*k) + slope*(dk*n + 2*k*slope)) / metric**3
@@ -61,33 +95,38 @@ def build_samples():
     return samples
 
 
-SAMPLES = build_samples()
+CROSSOVER_LENGTH = TRACKS["crossover"]["length"]
+CROSSOVER_SAMPLES = build_samples(CROSSOVER_LENGTH, CROSSOVER_CONTROLS)
+SAMPLES = build_samples(LENGTH, CONTROLS)
 
 
-def approach(length, station):
-    return (abs(length - LENGTH) < 2 and
-            (1800 <= station <= 3160 or 3600 <= station <= 4410))
+def available_samples(length, station):
+    if abs(length - LENGTH) < 2 and (1800 <= station <= 3160 or 3600 <= station <= 4410):
+        return SAMPLES
+    if abs(length - CROSSOVER_LENGTH) < 2 and 180 <= station <= 2800:
+        return CROSSOVER_SAMPLES
+    return None
 
 
-def reference(station):
+def reference(station, samples=SAMPLES):
     index = int(station)
-    left = SAMPLES.get(index)
+    left = samples.get(index)
     if left is None:
         return None
-    right = SAMPLES.get(index+1, left)
+    right = samples.get(index+1, left)
     t = station-index
     return tuple(a+t*(b-a) for a,b in zip(left,right))
 
 
-def planning_window(planning, station, tracked):
+def planning_window(planning, station, tracked, samples=SAMPLES):
     """Transform live and public road knots into path arc distance and curvature."""
     result = []
     distance = previous = 0.0
-    current = reference(station)
+    current = reference(station, samples)
     last_scale = current[3] if current else 1.0
     for row in planning:
         ds, curve, grade = row[:3]
-        ref = reference(station+ds)
+        ref = reference(station+ds, samples)
         scale = 1.0
         if ref is not None:
             _, _, change, scale, road_curve = ref

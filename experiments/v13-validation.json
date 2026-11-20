@@ -1,0 +1,102 @@
+{
+  "bundle_sha256": "323c1c5a8bcd0a0b4e4ee7b1892eb613550bcaacfbe3e7f5c0940cf23f9d3a0c",
+  "unit_tests": 151,
+  "replays": [
+    {
+      "calls": 20993,
+      "exceptions": 0,
+      "invalid_actions": 0
+    },
+    {
+      "calls": 24618,
+      "exceptions": 0,
+      "invalid_actions": 0
+    }
+  ],
+  "benchmark": {
+    "source_sha256": {
+      "agent.py": "a06c04dd4cefbaaecfd0031d19ba30808cce47d00dc03bffea8c3f4cbef739ea",
+      "parkland_line.py": "6945cf99961e1f68f3de3e2bacc92662bfc59db776bfbb3bd9ae64cde6646222",
+      "track_data.py": "7e446500e8b4abcbc59968099d573f1a87233c105fac7b25860dcabba7f3a9c7",
+      "track_parkland.py": "46d111e647d051d140540966573222289fe1350087e82e40704c75583c44ff6c",
+      "track_highland.py": "ee0b9e81486aa13ce5ed2a6df05ed361a50ad641a0f1f66df0197e3553888a33",
+      "track_crossover.py": "768e5f43778fe0ffe060ac60b78e8ec44fd6c1e878ed58c6bdf7969bf6453ac5",
+      "design.json": "cb60ede5afae0e40da031ec33c8b664203aa9655bc758dc77ae3ea403b756502"
+    },
+    "calls": 30000,
+    "invalid_or_exception_count": 0,
+    "act_p99_ms": 0.442
+  },
+  "closed_loop": [
+    {
+      "track": "crossover",
+      "wetness": 0,
+      "v12_seconds": 117.9,
+      "v13_seconds": 115.2,
+      "max_abs_offset_m": 2.9422,
+      "left_road": false
+    },
+    {
+      "track": "parkland",
+      "wetness": 0,
+      "v12_seconds": 92.8,
+      "v13_seconds": 92.8,
+      "max_abs_offset_m": 3.3381,
+      "left_road": false
+    },
+    {
+      "track": "highland",
+      "wetness": 0,
+      "v12_seconds": 130.633,
+      "v13_seconds": 130.633,
+      "max_abs_offset_m": 1.3177,
+      "left_road": false
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.5,
+      "v12_seconds": 135.633,
+      "v13_seconds": 132.5,
+      "max_abs_offset_m": 2.9108,
+      "left_road": false
+    },
+    {
+      "track": "crossover",
+      "wetness": 0.9,
+      "v12_seconds": 146.167,
+      "v13_seconds": 143.6,
+      "max_abs_offset_m": 2.8935,
+      "left_road": false
+    },
+    {
+      "track": "parkland",
+      "wetness": 0.9,
+      "v12_seconds": 114.567,
+      "v13_seconds": 114.567,
+      "max_abs_offset_m": 3.3172,
+      "left_road": false
+    },
+    {
+      "track": "highland",
+      "wetness": 0.9,
+      "v12_seconds": 164.267,
+      "v13_seconds": 164.267,
+      "max_abs_offset_m": 1.2584,
+      "left_road": false
+    },
+    {
+      "track": "crossover",
+      "wetness": 1,
+      "v12_seconds": 149.233,
+      "v13_seconds": 146.7,
+      "max_abs_offset_m": 2.8893,
+      "left_road": false
+    }
+  ],
+  "model": {
+    "tyre_temp_c": 53,
+    "downforce_coefficient": 1.2,
+    "body_sideslip": true,
+    "limitation": "Kinematic diagnostic only, no AGX tyre dynamics, collisions or real lap time."
+  }
+}

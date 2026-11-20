@@ -1,4 +1,4 @@
-"""AGX Formula Racing v12: a width-bounded Parkland line for steering and pace.
+"""AGX Formula Racing v13: width-bounded lines on Parkland and Crossover.
 
 Contract: rsi-racing-4.4. Public geometry and legal observations only.
 Control/grip constants below are conservative engineering hypotheses, not the
@@ -51,6 +51,13 @@ def number(value, default=0.0):
 
 def maximum(values, default=0.0):
     return max((number(v, default) for v in (values or [])), default=default)
+
+
+def wet_chicane_speed(speed, station, wet_weight):
+    """Blend in a saturated-track approach limit for the two tight apexes."""
+    if 5214 <= station <= 5241 or 5267 <= station <= 5290:
+        return speed - wet_weight * max(0.0, speed - 13.0)
+    return speed
 
 
 def tyre_mu(observation):
@@ -178,6 +185,7 @@ class Driver:
         self.planning_knots = None
         self.traffic_history = {}
         self.line_active = False
+        self.line_samples = None
         self.line_reference = None
         self.line_tracked = False
         self.returning_from_line = False
@@ -188,15 +196,17 @@ class Driver:
         n = number(car.get("n"))
         speed = number(car.get("speed_mps"))
         was_active = self.line_active
+        length = number(observation.get("track_length_m"))
+        self.line_samples = parkland_line.available_samples(length, s) if parkland_line else None
         self.line_active = bool(
-            parkland_line and parkland_line.approach(number(observation.get("track_length_m")), s)
+            self.line_samples is not None
             and self.pass_seat is None and not self.returning_from_line
             and min(geometry[2] - n, geometry[3] + n) > 2
             and not any(r.get("status") == "racing"
                         and -25 - 1.5 * max(0, number(r.get("speed_mps")) - speed)
                         < number(r.get("gap_m")) < max(70, 1.5 * speed)
                         for r in observation.get("rivals", [])))
-        self.line_reference = parkland_line.reference(s) if self.line_active else None
+        self.line_reference = parkland_line.reference(s, self.line_samples) if self.line_active else None
         self.line_tracked = self.line_active
         if self.line_active:
             offset, tangent = self.line_reference[:2] if self.line_reference else (0.0, 0.0)
@@ -291,12 +301,18 @@ class Driver:
         # Available ground-level braking, bounded only by measured brake force.
         brake_limit = max(1.0, number(car.get("brake_force_max_n"), mass * 12)) / mass
         braking = min(mu * 9.81, brake_limit)
-        dry_braking = clip(1 - number((observation.get("weather") or {}).get("track_wetness")) / .30, 0, 1)
+        wetness = number((observation.get("weather") or {}).get("track_wetness"))
+        dry_braking = clip(1 - wetness / .30, 0, 1)
         self.available_braking = braking
         weakest_grade = min([geometry[1]] + [row[2] for row in rows])
         horizon_braking = max(0.1, braking + 9.81 * weakest_grade)
         horizon = max(360.0, speed * speed / (2 * horizon_braking) + speed * dt + 3)
         length = number(observation.get("track_length_m"))
+        station = number(car.get("s"))
+        crossover = TRACKS.get("crossover")
+        wet_chicane = (clip((wetness - .65) / .30, 0, 1)
+                       if crossover and abs(crossover["length"] - length) < 2
+                       and 4400 <= station <= 5290 else 0.0)
         if length > 0:
             horizon = min(horizon, length)
         drag = max(0.0, number(car.get("drag_n")))
@@ -333,9 +349,10 @@ class Driver:
             if self.line_tracked or abs(path_curve) > abs(curve):
                 curve = path_curve
         target = corner_speed(curve)
+        if wet_chicane:
+            target = wet_chicane_speed(target, station, wet_chicane)
         planning = [row for row in rows if row[0] <= horizon]
         # Preserve the live v4's full ~2 m maps, checking every original knot.
-        station = number(car.get("s"))
         public = self.public_window(length, station, horizon)
         if public is not None:
             planning.extend(public)
@@ -347,7 +364,7 @@ class Driver:
                 planning.append([distance, *sample, 0.0])
         planning.sort(key=lambda r: r[0])
         if self.line_active:
-            planning = parkland_line.planning_window(planning, station, self.line_tracked)
+            planning = parkland_line.planning_window(planning, station, self.line_tracked, self.line_samples)
         if not planning:
             target = min(target, 12.0)
         else:
@@ -360,8 +377,10 @@ class Driver:
             next_curve = planning[-1][1]
             for row in reversed(planning):
                 distance, kappa, slope = row[:3]
-                distance = max(0.0, distance - reaction)
                 corner = corner_speed(kappa)
+                if wet_chicane:
+                    corner = wet_chicane_speed(corner, station + distance, wet_chicane)
+                distance = max(0.0, distance - reaction)
                 gap = max(0.0, next_distance - distance)
                 grade_accel = 9.81 * min(slope, next_grade)
                 trial_v2 = min(corner * corner, max(0.0, envelope * envelope + 2 * (braking + grade_accel) * gap))

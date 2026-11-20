@@ -2,6 +2,8 @@
 
 用于 AGX 多人赛车的 Python 车手、车辆设计与实验。合同 `rsi-racing-4.4`，核查日期 2026-11-15。
 
+**2026-11-20**　v13 为 Crossover 的前段弯区加入宽度约束走线，并对 5.21 km 双急弯加入高湿保护。[最近七场与前两名对比](docs/race-review-2026-11-20.md) · [验证数据](experiments/v13-validation.json)
+
 **2026-11-18 13:15（北京时间）**　AGX 已通过赛车 v12 准入。Parkland 两组连续弯使用由赛道宽度约束的走线，转向和制动规划共用其曲率。附近有车时采用交通策略。三场本人日志共 59,089 次决策重放、147 项测试通过。[平台回执](experiments/submission-v12.json) · [闭环模型与验证数据](experiments/v12-validation.json)
 
 **2026-11-18**　最近八场均使用 v10，一冠一季。v11 已于北京时间 11:18 提交，11:19 确认通过 AGX 准入。[平台回执](experiments/submission-v11.json)。该版本针对 Crossover 跟随慢车期间的超车选边及 Parkland 湿地入弯制动进行了优化，已经过两场本人日志共 42,217 次决策重放。详见[最近八场、前两名对比与参赛包](docs/recent-races-2026-11-18.md)。
